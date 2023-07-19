@@ -9,7 +9,7 @@ import { BublesAnimationComponent } from './bubles-animation/bubles-animation.co
 import { CarouselComponent } from './carousel/carousel.component';
 import { AlertMessageComponent } from './alert-message/alert-message.component';
 import { SuccessMessageComponent } from './success-message/success-message.component';
-import { WeatherComponent } from './weather/weather.component';
+
 
 @NgModule({
   declarations: [
@@ -21,7 +21,6 @@ import { WeatherComponent } from './weather/weather.component';
     CarouselComponent,
     AlertMessageComponent,
     SuccessMessageComponent,
-    WeatherComponent,
   ],
   imports: [
     CommonModule,
