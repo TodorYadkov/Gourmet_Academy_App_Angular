@@ -1,0 +1,11 @@
+{
+  "name": "gourmet-academy",
+  "version": "1.0.0",
+  "engines": {
+	"node": ">=18 <19"
+  },
+  "scripts": {
+    "start": "cd server && node index.js",
+    "build": "cd client/dist/gourmet-academy && npm run build"
+  }
+}
