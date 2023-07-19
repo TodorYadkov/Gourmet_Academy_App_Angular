@@ -5,7 +5,7 @@
 	"node": ">=18 <19"
   },
   "scripts": {
-    "start": "cd server && npm install",
-    "build": "cd server && node index.js"
+    "start": "cd server && node index.js",
+    "build": "cd server && npm install"
   }
 }
