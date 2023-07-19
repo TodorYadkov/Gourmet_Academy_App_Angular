@@ -1,0 +1,114 @@
+ .items .comment {
+     margin-bottom: 20px;
+     padding-top: 20px;
+     padding-bottom: 20px;
+ }
+
+ .items .comment .info {
+     padding-top: 0px;
+     text-align: center;
+ }
+
+ .items .comment .info .comment-name {
+     font-weight: 600;
+ }
+
+ .items .comment .info .comment-name .comment-info {
+     font-size: 14px;
+     margin-top: 15px;
+ }
+
+ .items .comment .info .comment-name .comment-info .value {
+     font-weight: 400;
+ }
+
+ .items .comment .info .quantity .quantity-input {
+     margin: auto;
+     width: 80px;
+ }
+
+ .items .comment .info .price {
+     margin-top: 15px;
+     font-weight: bold;
+     font-size: 22px;
+ }
+
+ @media (min-width: 768px) {
+     .items .comment .info {
+         padding-top: 25px;
+         text-align: left;
+     }
+
+     .items .comment .info .price {
+         font-weight: bold;
+         font-size: 22px;
+         top: 17px;
+     }
+
+     .items .comment .info {
+         text-align: center;
+     }
+
+     .items .comment .info {
+         padding: 4px 10px;
+         text-align: center;
+     }
+ }
+
+ .comment-details {
+     padding: 10px;
+ }
+
+
+ .items {
+     -webkit-box-shadow: 5px 5px 4px -1px rgba(0, 0, 0, 0.25);
+     box-shadow: 5px 5px 4px -1px rgba(0, 0, 0, 0.08);
+ }
+
+ .comment {
+     display: flex;
+     justify-content: space-between;
+     align-items: center;
+ }
+
+ .comment-info {
+     flex: 1;
+ }
+
+ .static-info {
+     display: flex;
+     align-items: center;
+ }
+
+ .actions {
+     display: flex;
+     gap: 5px;
+ }
+
+ /* Action buttons */
+ .card-body {
+     display: flex;
+     flex-direction: column;
+ }
+
+ .actions {
+     margin-top: auto;
+     display: flex;
+     justify-content: flex-end;
+ }
+
+ .action-btn {
+     background-color: transparent;
+     border: none;
+     color: #ffffff;
+     padding: 0;
+     margin: 0;
+ }
+
+ .action-btn i {
+     font-size: 1.5rem;
+ }
+
+ .action-btn:hover {
+     transform: scale(1.5);
+ }

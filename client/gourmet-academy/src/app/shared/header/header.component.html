@@ -1,0 +1,107 @@
+<header>
+    <div class="navigation-section-color bs-docs-section clearfix">
+        <div class="row w-100">
+            <div class="col-lg-12">
+                <div class="bs-component">
+                    <nav class="navbar navbar-expand-lg" data-bs-theme="dark">
+                        <!-- Logo -->
+                        <a routerLink="/" class="navbar-brand ms-5"><img class="img-logo" src="/assets/logo.png"
+                                alt="logo"></a>
+                        <!-- Button when the display is small -->
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+                            aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <!-- All menu items -->
+                        <div class="container-fluid">
+                            <div class="container">
+                                <!-- Add show class to show all items in nav when the display is small -->
+                                <div class="collapse navbar-collapse me-3" id="navbarNav">
+                                    <ul class="navbar-nav me-auto ms-2">
+                                        <li class="nav-item">
+                                            <a class="nav-link" routerLinkActive='active'
+                                                [routerLinkActiveOptions]="{ exact: true }" routerLink="/"
+                                                style="font-size: x-large;"><i class="bi bi-house-door"></i> Начало</a>
+                                        </li>
+                                        <!-- Update nav returns true if there is a userToken in localStorage - create template variable guest and if false show the guest nav -->
+                                        <ng-container *ngIf="updateNav(); else guest">
+                                            <li *ngIf="isUserAdmin" class="nav-item">
+                                                <a class="nav-link" routerLink="/add-restaurants"
+                                                    routerLinkActive='active' style="font-size: x-large;"><i
+                                                        class="bi bi-house-add"></i> Добави
+                                                    ресторант</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" routerLink="/profile" routerLinkActive='active'
+                                                    style="font-size: x-large;"><i class="bi bi-person-circle"></i> Моят
+                                                    профил</a>
+                                            </li>
+                                            <li class="nav-item" (click)="logout()">
+                                                <a class="nav-link" href="javascript:void(0)" routerLinkActive='active'
+                                                    style="font-size: x-large;"><i class="bi bi-box-arrow-right"></i>
+                                                    Изход</a>
+                                            </li>
+                                        </ng-container>
+                                        <!-- Guest navigation -->
+                                        <ng-template #guest>
+                                            <li class="nav-item">
+                                                <a class="nav-link" routerLinkActive='active' routerLink="/login"
+                                                    style="font-size: x-large;"><i class="bi bi-door-open"></i> Вход</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" routerLink="/register" routerLinkActive='active'
+                                                    style="font-size: x-large;"><i class="bi bi-person-plus"></i>
+                                                    Регистрация</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" routerLink="/about-us" routerLinkActive='active'
+                                                    style="font-size: x-large;"><i class="bi bi-info-circle"></i> За
+                                                    нас</a>
+                                            </li>
+                                        </ng-template>
+                                    </ul>
+                                    <!-- Links and theme selector -->
+                                    <ul class="navbar-nav ms-md-auto custom-right-margin">
+                                        <li class="nav-item">
+                                            <a target="_blank" rel="noopener" class="nav-link"
+                                                href="https://github.com/TodorYadkov"><i
+                                                    class="bi bi-github text-primary-emphasis"
+                                                    style="font-size: 30px;"></i><span
+                                                    class="d-lg-none ms-2">GitHub</span></a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a target="_blank" rel="noopener" class="nav-link"
+                                                href="https://www.linkedin.com/in/todor-yadkov-080150247"><i
+                                                    class="bi bi-linkedin text-primary-emphasis"
+                                                    style="font-size: 30px;"></i><span
+                                                    class="d-lg-none ms-2">LinkedIn</span></a>
+                                        </li>
+                                        <li class="nav-item py-2 py-lg-1 col-12 col-lg-auto">
+                                            <div class="vr d-none d-lg-flex h-100 mx-lg-2 text-white"></div>
+                                            <hr class="d-lg-none my-2 text-white-50">
+                                        </li>
+                                        <li class="nav-item">
+                                            <ng-container *ngIf="theme === 'light';else dark">
+                                                <a rel="noopener" class="nav-link" href="javascript:void(0)"><i
+                                                        class="bi bi-sun-fill text-primary-emphasis"
+                                                        style="font-size: 30px;" (click)="checkThemeState()"></i></a>
+                                            </ng-container>
+                                            <ng-template #dark>
+                                                <a rel="noopener" class="nav-link" href="javascript:void(0)"><i
+                                                        class="bi bi-moon-stars-fill text-primary-emphasis"
+                                                        style="font-size: 30px;" (click)="checkThemeState()"></i></a>
+                                            </ng-template>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <app-weather></app-weather>
+                        </div>
+                    </nav>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>

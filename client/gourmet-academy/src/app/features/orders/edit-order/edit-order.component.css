@@ -1,0 +1,27 @@
+.modal-content {
+    background-color: #909192;
+    -webkit-box-shadow: 5px 5px 15px -2px rgba(0, 0, 0, 0.42);
+    box-shadow: 5px 5px 15px -2px rgba(0, 0, 0, 0.42);
+}
+
+/* Action buttons */
+.actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.action-btn {
+    background-color: transparent;
+    border: none;
+    color: #ffffff;
+    padding: 0;
+    margin: 0;
+}
+
+.action-btn i {
+    font-size: 1.5rem;
+}
+
+.action-btn:hover {
+    transform: scale(1.5);
+}

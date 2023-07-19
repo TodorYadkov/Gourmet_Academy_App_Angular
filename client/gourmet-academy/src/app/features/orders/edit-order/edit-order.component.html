@@ -1,0 +1,134 @@
+<!-- Modal delete Order -->
+<div class="modal fade" id="edit_{{orderToEditId}}" data-bs-focus="true" data-bs-backdrop="static"
+    data-bs-keyboard="true" tabindex="-1" aria-labelledby="editOrder" aria-hidden="true">
+    <div
+        class="modal-dialog modal-dialog-centered modal-lg d-flex flex-column position-relative mt-4 mb-3 rounded text-white">
+        <div class="modal-content fst-roboto">
+            <div class="modal-header">
+                <h2 class="modal-title fw-bold text-decoration-underline" id="editOrder">Редакция поръчка</h2>
+            </div>
+            <div class="modal-body">
+                <!-- Spinner -->
+                <app-loading [isLoading]="isLoading"></app-loading>
+                <!-- Display error -->
+                <app-alert-message [errorMsgFromServer]="errorMsgFromServer"></app-alert-message>
+                <!-- Display success message -->
+                <app-success-message [successMessage]="successMessage"></app-success-message>
+
+                <ng-container *ngIf="!successMessage">
+                    <div class="row ">
+                        <div class="col-md-5 col-xl-4 col-xxl-5 text-center text-md-start">
+                            <form #orderForm="ngForm" (ngSubmit)="updateOrder(orderForm)">
+                                <h5 class="my-0 py-0">Редактирай данни за доставка</h5>
+                                <hr class="mt-1">
+                                <!-- Name -->
+                                <div class="form-group form-input mb-1">
+                                    <label for="name" class="form-label mb-0 text-secondary-emphasis">Име</label>
+                                    <input id="name" [ngModel]="userDetails.name"
+                                        class="form-control text-body-emphasis" type="text" name="name" disabled>
+                                </div>
+                                <!-- Phone -->
+                                <div class="form-group form-input mb-1">
+                                    <label for="phone" class="form-label mb-0 text-secondary-emphasis">Телефон</label>
+                                    <input id="phone" [ngModel]="userDetails.phone"
+                                        class="form-control text-body-emphasis" type="tel" name="phone" disabled>
+                                </div>
+                                <!-- Address -->
+                                <div class="form-group form-input mb-1">
+                                    <label for="address" class="form-label mb-0 text-secondary-emphasis">Адрес за
+                                        доставка</label>
+                                    <input id="address" type="text" class="form-control" name="addressDelivery"
+                                        [ngModel]="orderToEdit.addressDelivery" #inAddress="ngModel"
+                                        [ngClass]="{'is-valid': inAddress.valid && inAddress.dirty, 'is-invalid': inAddress.invalid && inAddress.dirty}"
+                                        required minlength="5" maxlength="100">
+                                    <!-- Validation messages -->
+                                    <div *ngIf="inAddress.errors?.['required']" class="invalid-feedback fs-6">Полето е
+                                        задължително</div>
+                                    <div *ngIf="inAddress.errors?.['minlength']" class="invalid-feedback fs-6">Адресът
+                                        трябва да бъде поне 5 символа</div>
+                                    <div *ngIf="inAddress.errors?.['maxLength']" class="invalid-feedback fs-6">Адресът
+                                        трябва да бъде максимум 100 символа</div>
+                                    <div *ngIf="inAddress.valid" class="valid-feedback fs-6">Полето е валидно</div>
+                                </div>
+                                <div class="form-submit my-4">
+                                    <button [disabled]="orderForm.invalid || totalBillCost === 0"
+                                        class="btn btn-primary btn-lg" style="margin-left: 116px;"><i
+                                            class="bi bi-pencil-square"></i>
+                                        Редактирай</button>
+                                </div>
+                            </form>
+                        </div>
+                        <!-- Summary bill -->
+                        <div *ngIf="totalBillCost !== 0;else noProducts" class="col d-flex" style="margin-left: 49px;">
+                            <div class="summary rounded py-0 position-relative" style="width: 340px;">
+                                <h5 class="my-0 py-0">Редактирай поръчка</h5>
+                                <hr class="my-1 mb-4">
+
+                                <div *ngFor="let order of summaryOrder" class="product my-2 row">
+                                    <div class="col">
+                                        <div class="product-info">
+                                            <span><strong>{{order.qtyProduct}} x </strong>{{order.product.name}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="static-info me-2">
+                                            <div class="total-info actions">
+                                                <span class="value">{{order.totalPriceProduct | number:'1.2-2'}}
+                                                    лв.</span>
+
+                                                <!-- Buttons to add, remove, delete ordered product -->
+                                                <button type="button" class="action-btn" title="Добави"
+                                                    (click)="addMoreProduct(order.product)">
+                                                    <i class="bi bi-plus-square fs-6 ms-1 text-white"></i>
+                                                </button>
+                                                <button type="button" class="action-btn" title="Намали"
+                                                    (click)="removeProduct(order.product)">
+                                                    <i class="bi bi-dash-square fs-6 mx-1 text-white"></i>
+                                                </button>
+                                                <button type="button" class="action-btn ms-1" title="Изтрий"
+                                                    (click)="deleteProduct(order.product)">
+                                                    <i class="bi bi-trash3 fs-6 text-white"></i>
+                                                </button>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <hr class="mb-0">
+                                <div class="summary-item fs-5 mt-1">
+                                    <div class="row">
+                                        <div class="col text-start mb-3">
+                                            <span class="text">Общо:</span>
+                                        </div>
+                                        <div class="col text-end fw-bolder">
+                                            <span>{{totalBillCost | number:'1.2-2'}} лв.</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <ng-template #noProducts>
+                        <div class="summary rounded py-0 position-relative" style="width: 340px;">
+                            <h5 class="my-0 py-0">Редактирай поръчка</h5>
+                            <hr class="my-1 mb-4">
+                            <div class="alert alert-dismissible alert-secondary d-flex flex-column align-items-center">
+                                <p class="text-center">Няма налични продукти във вашата поръчка.</p>
+                                <button type="button" (click)="onCloseModal()" class="btn btn-secondary" data-bs-dismiss="modal">Назад</button>
+                            </div>
+                        </div>
+
+                    </ng-template>
+
+                </ng-container>
+
+                <div class="modal-footer">
+                    <button type="button" (click)="onCloseModal()" class="btn btn-secondary" data-bs-dismiss="modal"><i
+                            class="bi bi-x-lg"></i> Затвори</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

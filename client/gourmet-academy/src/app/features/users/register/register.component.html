@@ -1,0 +1,132 @@
+<!-- Spinner -->
+<app-loading [isLoading]="isLoading"></app-loading>
+
+<div *ngIf="!isLoading" class="body-form d-md-flex align-items-center justify-content-between">
+    <div class="register-content mt-5 mb-5">
+        <div class="register-image d-flex">
+            <img class="register-img position-sticky d-none d-lg-flex flex-grow-1" src="/assets/register-img.jpg"
+                alt="Register Image">
+        </div>
+        <div class="register-form">
+            <form id="register-form" #regForm="ngForm" (ngSubmit)="registerUser(regForm)">
+                <h2><i class="bi bi-person-fill-add"></i> Регистрация</h2>
+
+                <!-- Display error  -->
+                <app-alert-message [errorMsgFromServer]="errorMsgFromServer"></app-alert-message>
+
+                <!-- Name -->
+                <div class="form-group form-input">
+                    <input type="text" class="form-control" id="name" name="name" ngModel #inName="ngModel" [ngClass]="{'is-valid': inName.valid && inName.dirty, 
+                    'is-invalid': inName.invalid && inName.dirty}" required minlength="2" maxlength="30">
+                    <label for="name" class="form-label">Вашето име</label>
+                    <!-- Validation messages -->
+                    <div *ngIf="inName.errors?.['required']" class="invalid-feedback fs-6">Полето е
+                        задължително</div>
+                    <div *ngIf="inName.errors?.['minlength']" class="invalid-feedback fs-6">Името
+                        трябва да бъде поне 2 символа</div>
+                    <div *ngIf="inName.errors?.['maxLength']" class="invalid-feedback fs-6">Името
+                        трябва да бъде максимум 30 символа</div>
+                    <div *ngIf="inName.valid" class="valid-feedback fs-6">Полето е валидно</div>
+                </div>
+                <!-- Email -->
+                <div class="form-group form-input">
+                    <input id="email" type="email" class="form-control" name="email" ngModel #inEmail="ngModel"
+                        [ngClass]="{'is-valid': inEmail.valid && inEmail.dirty, 'is-invalid': inEmail.invalid && inEmail.dirty}"
+                        required email pattern="^[\w]+@[\w]+\.[\w]+$">
+                    <label for="email" class="form-label">Имейл</label>
+                    <!-- Validation messages -->
+                    <div *ngIf="inEmail.errors?.['required']" class="invalid-feedback fs-6">Полето е
+                        задължително</div>
+                    <div *ngIf="inEmail.errors?.['email'] || inEmail.errors?.['pattern']" class="invalid-feedback fs-6">
+                        Въведеният имейл е невалиден</div>
+                    <div *ngIf="inEmail.valid" class="valid-feedback fs-6">Полето е валидно</div>
+                </div>
+                <!-- Phone -->
+                <div class="form-group form-input">
+                    <input id="phone" type="tel" class="form-control" name="phone" ngModel #inPhone="ngModel"
+                        [ngClass]="{'is-valid': inPhone.valid && inPhone.dirty, 'is-invalid': inPhone.invalid && inPhone.dirty}"
+                        required pattern="^\+\d{3}\d{3}\d{3}\d{3}$">
+                    <label for="phone" class="form-label">Телефон +359111222333</label>
+                    <!-- Validation messages -->
+                    <div *ngIf="inPhone.errors?.['required']" class="invalid-feedback fs-6">Полето е
+                        задължително</div>
+                    <div *ngIf="inPhone.errors?.['pattern']" class="invalid-feedback fs-6">
+                        Моля ползвайте следният формат +359111222333</div>
+                    <div *ngIf="inPhone.valid" class="valid-feedback fs-6">Полето е валидно</div>
+                </div>
+                <!-- Address -->
+                <div class="form-group form-input">
+                    <input id="address" type="text" class="form-control" name="address" ngModel #inAddress="ngModel"
+                        [ngClass]="{'is-valid': inAddress.valid && inAddress.dirty, 'is-invalid': inAddress.invalid && inAddress.dirty}"
+                        required minlength="5" maxlength="100">
+                    <label for="address" class="form-label">Въведете вашият адрес</label>
+                    <!-- Validation messages -->
+                    <div *ngIf="inAddress.errors?.['required']" class="invalid-feedback fs-6">Полето
+                        е задължително</div>
+                    <div *ngIf="inAddress.errors?.['minlength']" class="invalid-feedback fs-6">
+                        Адресът трябва да бъде поне 5 символа</div>
+                    <div *ngIf="inAddress.errors?.['maxLength']" class="invalid-feedback fs-6">
+                        Адресът трябва да бъде максимум 100 символа</div>
+                    <div *ngIf="inAddress.valid" class="valid-feedback fs-6">Полето е валидно</div>
+                </div>
+                <!-- Password -->
+                <div class="form-group form-input">
+                    <input id="password" type="password" class="form-control" name="password" ngModel #inPass="ngModel"
+                        [ngClass]="{'is-valid': inPass.valid && inPass.dirty, 'is-invalid': inPass.invalid && inPass.dirty}"
+                        required minlength="6">
+                    <label for="password" class="form-label">Въведете вашата парола</label>
+                    <!-- Validation messages -->
+                    <div *ngIf="inPass.errors?.['required']" class="invalid-feedback fs-6">Полето е
+                        задължително</div>
+                    <div *ngIf="inPass.errors?.['minlength']" class="invalid-feedback fs-6">Паролата
+                        трябва да бъде поне 6 символа</div>
+                    <div *ngIf="inPass.valid" class="valid-feedback fs-6">Полето е валидно</div>
+                </div>
+                <!-- RePass -->
+                <div class="form-group form-input">
+                    <input id="rePass" type="password" class="form-control" name="repass" ngModel #inRePass="ngModel"
+                        [ngClass]="{'is-valid': inRePass.valid && inRePass.dirty && inRePass.value === inPass.value, 
+                    'is-invalid': inRePass.dirty && inRePass.value !== inPass.value}" required minlength="6">
+                    <label for="rePass" class="form-label">Потвърдете вашата парола</label>
+                    <!-- Validation messages -->
+                    <div *ngIf="inRePass.dirty && inRePass.errors?.['required']" class="invalid-feedback fs-6">
+                        Полето е задължително</div>
+                    <div *ngIf="inRePass.dirty && inRePass.value !== inPass.value" class="invalid-feedback fs-6">
+                        Паролите не съвпадат</div>
+                    <div *ngIf="inRePass.valid && inRePass.value === inPass.value" class="valid-feedback fs-6">
+                        Полето е валидно</div>
+                </div>
+                <!-- Radio button -->
+                <div class="text-white">
+                    <div class="d-flex">
+                        <div class="form-check me-5">
+                            <input type="radio" ngModel #inRole="ngModel" name="role" id="user" value="user" class="form-check-input custom-radio-right">
+                            <label for="user" class="form-check-label custom-label-right" title="За потребител">Потребител</label>
+                        </div>
+                        <div class="form-check ms-5">
+                            <input type="radio" ngModel #inRole="ngModel" name="role" id="admin" value="admin" class="form-check-input custom-radio-right">
+                            <label for="admin" class="form-check-label custom-label-right" title="За собственик на ресторант">Собственик</label>
+                        </div>
+                    </div>
+                </div>
+                <!-- Company number -->
+                <div *ngIf="inRole.value === 'admin'" class="form-group form-input">
+                    <input type="text" id="bulstat" name="companyIdentificationNumber" ngModel #inBulstat="ngModel" class="form-control"
+                    [ngClass]="{'is-valid': inBulstat.valid && inBulstat.dirty, 'is-invalid': inBulstat.invalid && inBulstat.dirty}"
+                    required pattern="^(BG|bg)\d{9}$">
+                    <label for="bulstat" class="form-label">Булстат</label>
+                    <!-- Validation messages -->
+                    <div *ngIf="inBulstat.errors?.['required']" class="invalid-feedback fs-6">Полето е задължително</div>
+                    <div *ngIf="inBulstat.errors?.['pattern']" class="invalid-feedback fs-6">Моля ползвайте следният формат BG123456789</div>
+                    <div *ngIf="inBulstat.valid" class="valid-feedback fs-6">Полето е валидно</div>
+                </div>
+                <!-- Submit button -->
+                <div class="form-submit mt-4">
+                    <input [disabled]="regForm.invalid || inRePass.value !== inPass.value" type="submit"
+                        value="Регистрация" class="submit" id="submit" name="submit" />
+                    <a class="register-vertify" routerLink="/login">Вече имате акаунт?</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

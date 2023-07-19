@@ -1,0 +1,105 @@
+<!-- Spinner -->
+<app-loading [isLoading]="isLoading"></app-loading>
+
+<div *ngIf="!isLoading" class="body-form d-md-flex align-items-center justify-content-between">
+    <div class="add-restaurant-content mt-5 mb-5">
+        <div class="add-restaurant-image d-flex">
+            <img class="add-restaurant-img position-sticky d-none d-lg-flex flex-grow-1"
+                src="/assets/add-restaurant-img.png" alt="Add restaurant Image">
+        </div>
+        <div class="add-restaurant-form">
+            <form id="add-restaurant-form" #createFormR="ngForm" (ngSubmit)="createRestaurant(createFormR)">
+                <h2><i class="bi bi-house-add"></i> Добави ресторант</h2>
+
+                <!-- Display error -->
+                <app-alert-message [errorMsgFromServer]="errorMsgFromServer"></app-alert-message>
+
+                <!-- Name -->
+                <div class="form-group form-input">
+                    <input type="text" class="form-control" id="name" name="name" ngModel #inName="ngModel" [ngClass]="{'is-valid': inName.valid && inName.dirty, 
+                    'is-invalid': inName.invalid && inName.dirty}" required minlength="2" maxlength="50">
+                    <label for="name" class="form-label">Име на ресторанта</label>
+                    <!-- Validation messages -->
+                    <div *ngIf="inName.errors?.['required']" class="invalid-feedback fs-6">Полето е задължително </div>
+                    <div *ngIf="inName.errors?.['minlength']" class="invalid-feedback fs-6">Името на ресторанта трябва да бъде поне 2 символа</div>
+                    <div *ngIf="inName.errors?.['maxLength']" class="invalid-feedback fs-6">Името на ресторанта трябва да бъде максимум 50 символа</div>
+                    <div *ngIf="inName.valid" class="valid-feedback fs-6">Полето е валидно</div>
+                </div>
+                <!-- Location -->
+                <div class="form-group form-input">
+                    <input type="text" class="form-control" id="location" name="location" ngModel #inLocation="ngModel"
+                    [ngClass]="{'is-valid': inLocation.valid && inLocation.dirty, 'is-invalid': inLocation.invalid && inLocation.dirty}"
+                     required minlength="2" maxlength="50">
+                    <label for="location" class="form-label">Град</label>
+                    <!-- Validation messages -->
+                    <div *ngIf="inLocation.errors?.['required']" class="invalid-feedback fs-6">Полето е задължително</div>
+                    <div *ngIf="inLocation.errors?.['minlength']" class="invalid-feedback fs-6">Името на града трябва да бъде поне 2 символа</div>
+                    <div *ngIf="inLocation.errors?.['maxLength']" class="invalid-feedback fs-6">Името на града трябва да бъде максимум 50 символа</div>
+                    <div *ngIf="inLocation.valid" class="valid-feedback fs-6">Полето е валидно</div>
+                </div>
+                <!-- Address -->
+                <div class="form-group form-input">
+                    <input id="address" type="text" class="form-control" name="address" ngModel #inAddress="ngModel"
+                        [ngClass]="{'is-valid': inAddress.valid && inAddress.dirty, 'is-invalid': inAddress.invalid && inAddress.dirty}"
+                        required minlength="5" maxlength="100">
+                    <label for="address" class="form-label">Адрес на ресторанта</label>
+                    <!-- Validation messages -->
+                    <div *ngIf="inAddress.errors?.['required']" class="invalid-feedback fs-6">Полето е задължително</div>
+                    <div *ngIf="inAddress.errors?.['minlength']" class="invalid-feedback fs-6">Адресът трябва да бъде поне 5 символа</div>
+                    <div *ngIf="inAddress.errors?.['maxLength']" class="invalid-feedback fs-6">Адресът трябва да бъде максимум 100 символа</div>
+                    <div *ngIf="inAddress.valid" class="valid-feedback fs-6">Полето е валидно</div>
+                </div>
+                <!-- Phone -->
+                <div class="form-group form-input">
+                    <input id="phone" type="tel" class="form-control" name="phone" ngModel #inPhone="ngModel"
+                        [ngClass]="{'is-valid': inPhone.valid && inPhone.dirty, 'is-invalid': inPhone.invalid && inPhone.dirty}"
+                        required pattern="^\+\d{3}\d{3}\d{3}\d{3}$">
+                    <label for="phone" class="form-label">Телефон за резервации</label>
+                    <!-- Validation messages -->
+                    <div *ngIf="inPhone.errors?.['required']" class="invalid-feedback fs-6">Полето е задължително</div>
+                    <div *ngIf="inPhone.errors?.['pattern']" class="invalid-feedback fs-6">Моля ползвайте следният формат +359111222333</div>
+                    <div *ngIf="inPhone.valid" class="valid-feedback fs-6">Полето е валидно</div>
+                </div>
+                <!-- Cuisine -->
+                <div class="form-group form-input">
+                    <input type="text" class="form-control" id="cuisine" name="cuisine" ngModel #inCuisine="ngModel"
+                        [ngClass]="{'is-valid': inCuisine.valid && inCuisine.dirty, 
+                    'is-invalid': inCuisine.invalid && inCuisine.dirty}" required minlength="5" maxlength="40">
+                    <label for="cuisine" class="form-label">Предлагана кухня</label>
+                    <!-- Validation messages -->
+                    <div *ngIf="inCuisine.errors?.['required']" class="invalid-feedback fs-6">Полето е задължително</div>
+                    <div *ngIf="inCuisine.errors?.['minlength']" class="invalid-feedback fs-6">Предлагана кухня трябва да бъде поне 5 символа</div>
+                    <div *ngIf="inCuisine.errors?.['maxLength']" class="invalid-feedback fs-6">Предлагана кухня трябва да бъде максимум 40 символа</div>
+                    <div *ngIf="inCuisine.valid" class="valid-feedback fs-6">Полето е валидно</div>
+                </div>
+                <!-- Description -->
+                <div class="form-group form-input">
+                    <input type="text" class="form-control" id="description" name="description" ngModel
+                    #inDescription="ngModel" [ngClass]="{'is-valid': inDescription.valid && inDescription.dirty, 
+                    'is-invalid': inDescription.invalid && inDescription.dirty}" required minlength="5" maxlength="200">
+                    <label for="description" class="form-label">Кратко описание на ресторанта</label>
+                    <!-- Validation messages -->
+                    <div *ngIf="inDescription.errors?.['required']" class="invalid-feedback fs-6">Полето е задължително</div>
+                    <div *ngIf="inDescription.errors?.['minlength']" class="invalid-feedback fs-6">Описанието трябва да бъде поне 5 символа</div>
+                    <div *ngIf="inDescription.errors?.['maxLength']" class="invalid-feedback fs-6">Описанието трябва да бъде максимум 200 символа</div>
+                    <div *ngIf="inDescription.valid" class="valid-feedback fs-6">Полето е валидно</div>
+                </div>
+                <!-- Image -->
+                <div class="form-group form-input">
+                    <input id="image" type="text" class="form-control" name="image" ngModel #inImage="ngModel"
+                        [ngClass]="{'is-valid': inImage.valid && inImage.dirty, 'is-invalid': inImage.invalid && inImage.dirty}"
+                        required pattern="^https?:\/\/[^ ]+$">
+                    <label for="image" class="form-label">Снимка</label>
+                    <!-- Validation messages -->
+                    <div *ngIf="inImage.errors?.['required']" class="invalid-feedback fs-6">Полето е задължително</div>
+                    <div *ngIf="inImage.errors?.['pattern']" class="invalid-feedback fs-6">Снимката трябва да бъде линк започващ с http:// или https://</div>
+                    <div *ngIf="inImage.valid" class="valid-feedback fs-6">Полето е валидно</div>
+                </div>
+
+                <div class="form-submit mt-4">
+                    <input [disabled]="createFormR.invalid" type="submit" value="Добави" class="submit" id="submit" name="submit" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,5 @@
+<!-- To auto hide error add class - clear-error  -->
+<div *ngIf="errorMsgFromServer" class="alert alert-dismissible alert-danger fs-6"
+    [ngClass]="autoHide ? 'clear-error' : null">
+    {{errorMsgFromServer}}
+</div>

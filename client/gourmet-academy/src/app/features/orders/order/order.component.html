@@ -1,0 +1,215 @@
+<!-- Spinner -->
+<app-loading [isLoading]="isLoading"></app-loading>
+<!-- Show error -->
+<app-alert-message [errorMsgFromServer]="errorMsgFromServer"></app-alert-message>
+
+<section *ngIf="restaurantDetails"
+    class="card shopping-cart container dark my-4 shadow-lg d-flex flex-column position-relative rounded">
+    <!-- Header -->
+    <div class="block-heading">
+        <div class="shadow-lg restaurant-header mt-2 rounded">
+            <img class="restaurant-header-image d-none d-lg-flex flex-grow-1 rounded" src="{{restaurantDetails.image}}"
+                alt="Restaurant Image">
+            <!-- THis to stay on entire length on page -->
+            <div class="card">
+                <p class="fst-bad fw-bolder mt-1 mb-0 fs-1">{{restaurantDetails.name}}</p>
+                <p class="mb-1 mx-2"><i class="fa-solid fa-circle-info"></i> Описание: {{restaurantDetails.description}}
+                </p>
+                <p class="mb-1"><i class="fa-solid fa-location-dot"></i> Адрес: {{restaurantDetails.location}},
+                    {{restaurantDetails.address}}</p>
+                <p class="mb-2"><i class="fa-solid fa-square-phone"></i> Телефон за поръчки:
+                    <strong>{{restaurantDetails.phone}}</strong></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Show if the current restaurant not have any added products yet  -->
+    <ng-container *ngIf="allProducts.length === 0">
+        <div class="col-md-12 text-center text-primary-emphasis">
+            <div class="summary border rounded card">
+                <h4 class="fst-bad">Съвсем скоро Вашият любим ресторант ще публикува своите продукти !</h4>
+            </div>
+        </div>
+    </ng-container>
+
+    <!-- Hide all content if the current restaurant has not yet added products -->
+    <ng-container *ngIf="allProducts.length !== 0">
+
+        <div class="form-group d-flex align-items-center mb-3">
+            <!-- Search -->
+            <div class="col-4 ms-1">
+                <label for="search"><i class="bi bi-search-heart"></i> Намери любимата си храна</label>
+                <input ngModel (ngModelChange)="onSearch($event)" id="search" class="form-control form-control-sm"
+                    type="text" placeholder="Търси">
+            </div>
+            <!-- Filter by category -->
+            <div class="ms-3">
+                <label for="group-food">Избери група</label>
+                <select ngModel (ngModelChange)="filteredByCategory($event)" id="group-food"
+                    class="form-select form-select-sm px-1" aria-label="Search select" style="width: 200px;">
+                    <option value="" selected>Всички</option>
+                    <option *ngFor="let group of allActiveGroups" value="{{group}}">{{group | titlecase}}</option>
+                </select>
+            </div>
+        </div>
+
+
+        <div class="content shadow-lg">
+            <div class="row">
+                <div class="col-md-12 col-lg-8">
+                    <div class="border rounded px-1 py-1 shadow-sm">
+                        <div class="items">
+
+                            <!-- Message if no product found -->
+                            <ng-container *ngIf="isFoundResult">
+                                <div class="alert alert-dismissible alert-warning mt-3 text-center">
+                                    <h2><strong>Няма намерени продукти</strong></h2>
+                                </div>
+                            </ng-container>
+
+                            <!-- Product cards -->
+                            <div *ngFor="let product of currentProducts"
+                                class="f-block d-flex justify-content-between align-items-center mt-1 py-2 items rounded box">
+                                <div class="d-flex align-items-center ms-1">
+                                    <div class="mr-3">
+                                        <img alt="No Image" class="rounded" src="{{product.image}}" width="120px"
+                                            height="85px">
+                                    </div>
+                                    <div class="d-flex flex-column ms-2">
+                                        <div class="text-muted fst-italic spec">Име:</div>
+                                        <h5 class="text-white">{{product.name}}</h5>
+                                    </div>
+                                </div>
+                                <div class="d-flex text-muted flex-wrap mt-2">
+                                    <div class="mx-2">
+                                        <span class="d-block text-muted fst-italic spec">Грамаж:</span>
+                                        <span class="d-block fst-bold text-white">{{product.weight}}</span>
+                                    </div>
+                                    <div class="mx-2">
+                                        <span class="d-block text-muted fst-italic spec">Цена:</span>
+                                        <span class="d-block fst-bold text-white">{{product.price | number:'1.2-2'}}
+                                            лв.</span>
+                                    </div>
+                                    <!-- Only if there is a user and not the admin -->
+                                    <div *ngIf="hasUser && isRoleAdmin === false"
+                                        class="action-btn mt-1 ms-1 me-3 text-muted">
+                                        <!-- <span class="d-block text-muted fst-italic spec">Добави:</span> -->
+                                        <a type="button" title="Добави" (click)="orderProduct(product)"><i
+                                                class="bi bi-plus-circle py-0 my-0 fs-3"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- In case there are no register user -->
+                <ng-container *ngIf="hasUser === false; else summarySection">
+                    <div class="col-md-12 col-lg-4 text-primary-emphasis text-center">
+                        <div class="summary border rounded card">
+                            <div class="text-primary-emphasis">
+                                <h2 class="fst-bad">Добре дошли в Gourmet Academy</h2>
+                                <div class="col-md-12">
+                                    <div class="card px-2 my-4 py-3 text-primary-emphasis">
+                                        <h4 class="fst-italic">За да направите поръчка, моля влезте във вашият <a
+                                                class="fst-bad" routerLink="/login">профил</a> или се <a class="fst-bad"
+                                                routerLink="/register">регистрирайте</a></h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+
+                <ng-template #summarySection>
+                    <!-- Summary section -->
+                    <div class="col-md-12 col-lg-4 text-primary-emphasis">
+                        <div class="summary border rounded">
+
+                            <!-- In case the current user is owner of restaurant -->
+                            <ng-container *ngIf="isRoleAdmin; else orderSection">
+                                <div class="col-md-12 mt-1">
+                                    <div class="card px-4 mb-3 py-3 text-primary-emphasis">
+                                        <h4 class="fst-italic text-center">{{currentUser?.userDetails?.name}} Вие сте
+                                            регистриран като собственик на ресторант. Само потребители могат да правят поръчки и да коментират.</h4>
+                                    </div>
+                                </div>
+                            </ng-container>
+
+                            <ng-template #orderSection>
+                                <h2 class="text-center mb-4 text-decoration-underline fst-bad fw-bolder">Вашата поръчка
+                                </h2>
+                                <!-- Product -->
+                                <ng-container *ngIf="summaryOrder.length !== 0">
+
+                                    <div *ngFor="let order of summaryOrder" class="product my-2">
+                                        <div class="product-info">
+                                            <span><strong>{{order.qtyProduct}} x </strong>{{order.product.name}}</span>
+                                        </div>
+                                        <div class="static-info me-2">
+                                            <div class="total-info">
+                                                <span class="value">{{order.totalPriceProduct | number:'1.2-2'}}
+                                                    лв.</span>
+                                            </div>
+                                        </div>
+                                        <!-- Buttons to add, remove, delete ordered product -->
+                                        <div class="actions" style="font-size: 15px;">
+                                            <a type="button" class="action-btn" title="Добави"
+                                                (click)="addMoreProduct(order.product)">
+                                                <i class="bi bi-plus-square fs-6 text-primary-emphasis"></i>
+                                            </a>
+                                            <a type="button" class="action-btn" title="Намали"
+                                                (click)="removeProduct(order.product)">
+                                                <i class="bi bi-dash-square fs-6 text-primary-emphasis"></i>
+                                            </a>
+                                            <a type="button" class="action-btn ms-1" title="Изтрий"
+                                                (click)="deleteProduct(order.product)">
+                                                <i class="bi bi-trash3 fs-6 text-primary-emphasis"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                </ng-container>
+
+                                <!-- In case there are no ordered products -->
+                                <ng-container *ngIf="summaryOrder.length === 0 && isRoleAdmin === false">
+                                    <div class="col-md-12">
+                                        <div class="card px-4 mb-3 py-3 text-primary-emphasis">
+                                            <h4 class="fst-italic text-center">Добавете любимите си продукти сега</h4>
+                                        </div>
+                                    </div>
+                                </ng-container>
+
+                                <hr class="mb-0">
+                                <div class="summary-item fs-5"><span class="text">Общо</span><span
+                                        class="price fw-bolder">{{totalBillCost | number:'1.2-2'}} лв.</span></div>
+                                <div class="d-flex flex-column align-items-center">
+                                    <button data-bs-toggle="modal" [attr.data-bs-target]="'#payment'" type="button"
+                                        [disabled]="summaryOrder.length === 0"
+                                        class="btn btn-primary btn-lg btn-block"><i class="bi bi-bag-plus"></i>
+                                        Поръчай</button>
+                                </div>
+
+                                <!-- Modal payment -->
+                                <div class="modal fade" id="payment" data-bs-focus="true" data-bs-backdrop="static"
+                                    data-bs-keyboard="true" tabindex="-1" aria-labelledby="paymentForm"
+                                    aria-hidden="true">
+                                    <app-payment [restaurantDetails]="restaurantDetails"
+                                        [allOrderedProducts]="allOrderedProducts" [summaryOrder]="summaryOrder"
+                                        [totalBillCost]="totalBillCost" [currentUser]="currentUser"></app-payment>
+                                </div>
+                            </ng-template>
+
+                            <!-- Comments -->
+                            <hr class="mt-5 mb-0">
+                            <app-add-comments [restaurantDetails]="restaurantDetails"
+                                [isRoleAdmin]="isRoleAdmin"></app-add-comments>
+                        </div>
+
+                    </div>
+                </ng-template>
+            </div>
+        </div>
+    </ng-container>
+</section>

@@ -1,0 +1,92 @@
+<!-- Spinner -->
+<app-loading [isLoading]="isLoading"></app-loading>
+
+<!-- Display error -->
+<app-alert-message [errorMsgFromServer]="errorMsgFromServer" [autoHide]="true"></app-alert-message>
+
+<div *ngIf="!isLoading" class="row mt-2">
+    <div class="col-md-12">
+        <!-- The owner can read comments but cannot write-->
+        <ng-container *ngIf="isRoleAdmin">
+            <h3 class="text-center text-decoration-underline mb-3">Коментари</h3>
+        </ng-container>
+        <ng-container *ngIf="!isRoleAdmin">
+            <div class="card px-4 mb-3 text-primary-emphasis">
+                <h3 class="text-center text-decoration-underline mb-3">Коментари</h3>
+                <form #commentForm="ngForm" (ngSubmit)="postComment(commentForm)" class="mb-3">
+                    <div class="form-group form-input">
+                        <textarea ngModel #inComment="ngModel" name="comment" class="form-control"
+                            [ngClass]="{'is-valid': inComment.valid && inComment.dirty, 'is-invalid': inComment.invalid && inComment.dirty}"
+                            placeholder="Добави коментар" required minlength="5" maxlength="300" cols="30"
+                            rows="1"></textarea>
+                        <!-- Validation messages -->
+                        <div *ngIf="inComment.errors?.['minlength']" class="invalid-feedback fs-6">Коментара трябва да
+                            бъде поне 5 символа</div>
+                        <div *ngIf="inComment.errors?.['maxlength']" class="invalid-feedback fs-6">Коментара трябва да
+                            бъде максимум 300 символа</div>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" [disabled]="commentForm.invalid"
+                            class="btn btn-primary btn-sm mt-2"><i class="bi bi-chat-right-text"></i> Добави</button>
+                    </div>
+                </form>
+            </div>
+        </ng-container>
+        <!-- List all comments -->
+        <ng-container *ngIf="allComments.length > 0; else noComment">
+            <!-- Card comment -->
+            <div *ngFor="let comment of allComments" class="card mb-3 text-primary-emphasis">
+                <div class="card-body py-1">
+                    <h4 class="mb-0"><i class="bi bi-person"></i> {{comment.userId.name}}</h4>
+                    <div class="comment">
+                        <div class="comment-info">
+                            <span>{{comment.comment}}</span>
+                        </div>
+                    </div>
+                    <!-- Show edit and delete if the current user is owner -->
+                    <ng-container *ngIf="comment.userId._id === userId">
+                        <div class="actions" style="font-size: 15px;">
+                            <!-- Edit button -->
+                            <a type="button" data-bs-toggle="modal" [attr.data-bs-target]="'#' + 'edit_' + comment._id"
+                                class="action-btn me-2" title="Редактирай">
+                                <i class="bi bi-pencil-square fs-6 text-primary-emphasis"></i>
+                            </a>
+                            <!-- Delete button -->
+                            <a type="button" data-bs-toggle="modal"
+                                [attr.data-bs-target]="'#' + 'delete_' + comment._id" class="action-btn ms-1"
+                                title="Изтрий">
+                                <i class="bi bi-trash3 fs-6 text-primary-emphasis"></i>
+                            </a>
+                        </div>
+                        <!-- Edit Product with modal -->
+                        <!-- modal - add data-bs-focus="true" - Puts the focus on the modal when initialized, data-bs-backdrop="static" = for a backdrop which doesn't close the modal on click -->
+                        <!-- modal - ata-bs-keyboard="true" - Closes the modal when escape key is pressed -->
+                        <div class="modal fade" id="edit_{{comment._id}}" data-bs-focus="true" data-bs-backdrop="static"
+                            data-bs-keyboard="true" tabindex="-1" aria-labelledby="editComment" aria-hidden="true">
+
+                            <app-edit-comment [commentDetails]="comment"
+                                (updateCommentList)="updateComment()"></app-edit-comment>
+
+                        </div>
+                        <!-- Delete product -->
+                        <div class="modal fade" id="delete_{{comment._id}}" data-bs-focus="true"
+                            data-bs-backdrop="static" data-bs-keyboard="true" tabindex="-1"
+                            aria-labelledby="deleteComment" aria-hidden="true">
+
+                            <app-delete-comment [commentDetails]="comment"
+                                (updateCommentList)="updateComment()"></app-delete-comment>
+
+                        </div>
+                    </ng-container>
+
+                </div>
+            </div>
+        </ng-container>
+        <!-- In case there are no comments yet -->
+        <ng-template #noComment>
+            <div class="card mb-3 text-primary-emphasis py-3">
+                <h5 class="text-center">Няма добавени коментари</h5>
+            </div>
+        </ng-template>
+    </div>
+</div>

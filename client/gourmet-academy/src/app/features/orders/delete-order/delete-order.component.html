@@ -1,0 +1,31 @@
+<!-- Modal delete Order -->
+<div class="modal fade" id="delete_{{orderToDeleteId}}" data-bs-focus="true" data-bs-keyboard="true" tabindex="-1" aria-labelledby="deleteOrder" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-md d-flex flex-column position-relative rounded"
+        role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title fw-bold text-white text-decoration-underline" id="deleteComment">Откажи поръчка
+                </h3>
+            </div>
+            <div class="modal-body">
+                <!-- Spinner -->
+                <app-loading [isLoading]="isLoading"></app-loading>
+                <!-- Display error -->
+                <app-alert-message [errorMsgFromServer]="errorMsgFromServer"></app-alert-message>
+                <!-- Display success message -->
+                <app-success-message [successMessage]="successMessage"></app-success-message>
+
+                <ng-container *ngIf="!successMessage">
+                    <h5 class="text-center text-white">Сигурни ли сте, че желаете да откажете поръчката?</h5>
+                </ng-container>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning" (click)="deleteOrder(orderToDeleteId)"
+                        [disabled]="disableBtnDelete"><i class="bi bi-x-circle"></i> Откажи</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="onClose()">
+                        <i class="bi bi-x-lg"></i> Затвори</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

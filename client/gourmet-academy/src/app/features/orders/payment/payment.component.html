@@ -1,0 +1,99 @@
+<div class="modal-dialog modal-dialog-centered modal-lg d-flex flex-column position-relative mt-4 mb-3 rounded text-white">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 class="modal-title fw-bold text-decoration-underline" id="paymentForm">Вашата поръчка</h2>
+        </div>
+        <div class="modal-body">
+            <!-- Spinner -->
+            <app-loading [isLoading]="isLoading"></app-loading>
+            <!-- Display error -->
+            <app-alert-message [errorMsgFromServer]="errorMsgFromServer" [autoHide]="true"></app-alert-message>
+            <!-- Display success message -->
+            <div *ngIf="hasSuccessMessage" class="alert alert-dismissible alert-success">
+                <h3 class="text-decoration-underline">Успешна поръчка!</h3>
+                <p class="my-0">Наш консултант ще се свърже с вас.</p>
+                <p class="my-0">Приятен ден!</p>
+                <p class="fst-italic">Може да редактирате или откажете поръчката в рамките на 5 минути от
+                    <span type="button" data-bs-dismiss="modal" (click)="redirectToProfile()">"ТУК".</span>
+                </p>
+            </div>
+
+            <ng-container *ngIf="!hasSuccessMessage">
+                <div class="row ">
+                    <div class="col-md-5 col-xl-4 col-xxl-5 text-center text-md-start">
+                        <form #payForm="ngForm" (ngSubmit)="payBill(payForm)">
+                            <h4 class="my-0 py-0">Данни за доставка</h4>
+                            <hr class="mt-1">
+                            <!-- Name -->
+                            <div class="form-group form-input mb-1">
+                                <label for="name" class="form-label mb-0 text-secondary-emphasis">Име</label>
+                                <input id="name" [ngModel]="currentUser?.userDetails?.name"
+                                    class="form-control text-body-emphasis" type="text" name="name" disabled>
+                            </div>
+                            <!-- Phone -->
+                            <div class="form-group form-input mb-1">
+                                <label for="phone" class="form-label mb-0 text-secondary-emphasis">Телефон</label>
+                                <input id="phone" [ngModel]="currentUser?.userDetails?.phone"
+                                    class="form-control text-body-emphasis" type="tel" name="phone" disabled>
+                            </div>
+                            <!-- Address -->
+                            <div class="form-group form-input mb-1">
+                                <label for="address" class="form-label mb-0 text-secondary-emphasis">Адрес за
+                                    доставка</label>
+                                <input id="address" type="text" class="form-control" name="addressDelivery"
+                                    [ngModel]="currentUser?.userDetails?.address" #inAddress="ngModel"
+                                    [ngClass]="{'is-valid': inAddress.valid && inAddress.dirty, 'is-invalid': inAddress.invalid && inAddress.dirty}"
+                                    required minlength="5" maxlength="100">
+                                <!-- Validation messages -->
+                                <div *ngIf="inAddress.errors?.['required']" class="invalid-feedback fs-6">Полето е
+                                    задължително</div>
+                                <div *ngIf="inAddress.errors?.['minlength']" class="invalid-feedback fs-6">Адресът
+                                    трябва да бъде поне 5 символа</div>
+                                <div *ngIf="inAddress.errors?.['maxLength']" class="invalid-feedback fs-6">Адресът
+                                    трябва да бъде максимум 100 символа</div>
+                                <div *ngIf="inAddress.valid" class="valid-feedback fs-6">Полето е валидно</div>
+                            </div>
+                            <div class="form-submit my-4">
+                                <button [disabled]="payForm.invalid" class="btn btn-success btn-lg"
+                                    style="margin-left: 116px;"><i class="bi bi-bag-check"></i> Потвърждавам</button>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- Summary bill -->
+                    <div class="col d-flex" style="margin-left: 49px;">
+                        <div class="summary rounded py-0" style="width: 340px;position: relative;">
+                            <h4 class="my-0 py-0">Поръчка</h4>
+                            <hr class="my-1 mb-4">
+                            <div *ngFor="let order of summaryOrder" class="product my-2">
+                                <div class="product-info">
+                                    <span><strong>{{order.qtyProduct}} x </strong>{{order.product.name}}</span>
+                                </div>
+                                <div class="static-info me-2">
+                                    <div class="total-info">
+                                        <span class="value">{{order.totalPriceProduct | number:'1.2-2'}} лв.</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr class="mb-0">
+                            <div class="summary-item fs-5 mt-1">
+                                <div class="row">
+                                    <div class="col text-start mb-3">
+                                        <span class="text">Общо:</span>
+                                    </div>
+                                    <div class="col text-end fw-bolder">
+                                        <span>{{totalBillCost | number:'1.2-2'}} лв.</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+
+            <div class="modal-footer">
+                <button type="button" (click)="onCloseModal()" class="btn btn-secondary" data-bs-dismiss="modal"><i
+                        class="bi bi-x-lg"></i> Затвори</button>
+            </div>
+        </div>
+    </div>
+</div>

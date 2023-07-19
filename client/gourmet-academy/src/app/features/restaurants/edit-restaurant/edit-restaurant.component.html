@@ -1,0 +1,102 @@
+<!-- Spinner -->
+<app-loading [isLoading]="isLoading"></app-loading>
+
+<div *ngIf="isLoading === false" class="row">
+    <div class="col-md-5 col-xl-4 col-xxl-5 text-center text-md-start">
+        <h2 class="fw-bold mb-3"><span class="text-white text-decoration-underline">Редакция ресторант</span></h2>
+
+        <!-- Show error -->
+        <app-alert-message [errorMsgFromServer]="errorMsgFromServer"></app-alert-message>
+        <!-- Show success message -->
+        <app-success-message [successMessage]="successMessage" [autoHide]="true"></app-success-message>
+
+        <form #editRestaurant="ngForm" (ngSubmit)="onEditRestaurant(editRestaurant)">
+            <!-- Name -->
+            <div class="form-group mb-3">
+                <input [ngModel]="restaurantDetails.name" #inName="ngModel" type="text" class="form-control" name="name" placeholder="Име на ресторанта"
+                [ngClass]="{'is-valid': inName.valid && inName.dirty, 'is-invalid': inName.invalid && inName.dirty}" required minlength="2" maxlength="50">
+                <!-- Validation messages -->
+                <div *ngIf="inName.errors?.['required']" class="invalid-feedback fs-6">Полето езадължително</div>
+                <div *ngIf="inName.errors?.['minlength']" class="invalid-feedback fs-6">Името на ресторанта трябва да бъде поне 2 символа</div>
+                <div *ngIf="inName.errors?.['maxLength']" class="invalid-feedback fs-6">Името на ресторанта трябва да бъде максимум 50 символа</div>
+                <div *ngIf="inName.valid" class="valid-feedback fs-6">Полето е валидно</div>
+            </div>
+            <!-- Location -->
+            <div class="form-group mb-3">
+                <input [ngModel]="restaurantDetails.location" name="location" type="text" class="form-control" #inLocation="ngModel" placeholder="Град"
+                [ngClass]="{'is-valid': inLocation.valid && inLocation.dirty, 'is-invalid': inLocation.invalid && inLocation.dirty}"
+                required minlength="2" maxlength="50">
+                <!-- Validation messages -->
+                <div *ngIf="inLocation.errors?.['required']" class="invalid-feedback fs-6">Полето е задължително</div>
+                <div *ngIf="inLocation.errors?.['minlength']" class="invalid-feedback fs-6">Името на града трябва да бъде поне 2 символа</div>
+                <div *ngIf="inLocation.errors?.['maxLength']" class="invalid-feedback fs-6">Името на града трябва да бъде максимум 50 символа</div>
+                <div *ngIf="inLocation.valid" class="valid-feedback fs-6">Полето е валидно</div>
+            </div>
+            <!-- Address -->
+            <div class="form-group mb-3">
+                <input [ngModel]="restaurantDetails.address" #inAddress="ngModel" type="text" class="form-control" name="address" placeholder="Адрес на ресторанта"
+                [ngClass]="{'is-valid': inAddress.valid && inAddress.dirty, 'is-invalid': inAddress.invalid && inAddress.dirty}"
+                required minlength="5" maxlength="100">
+                <!-- Validation messages -->
+                <div *ngIf="inAddress.errors?.['required']" class="invalid-feedback fs-6">Полето е задължително</div>
+                <div *ngIf="inAddress.errors?.['minlength']" class="invalid-feedback fs-6">Адресът трябва да бъде поне 5 символа</div>
+                <div *ngIf="inAddress.errors?.['maxLength']" class="invalid-feedback fs-6">Адресът трябва да бъде максимум 100 символа</div>
+                <div *ngIf="inAddress.valid" class="valid-feedback fs-6">Полето е валидно</div>
+                </div>
+            <!-- Phone -->
+            <div class="form-group mb-3">
+                <input [ngModel]="restaurantDetails.phone" #inPhone="ngModel" type="tel" class="form-control" name="phone" placeholder="Телефон за резервации"
+                [ngClass]="{'is-valid': inPhone.valid && inPhone.dirty, 'is-invalid': inPhone.invalid && inPhone.dirty}"
+                required pattern="^\+\d{3}\d{3}\d{3}\d{3}$">
+                <!-- Validation messages -->
+                <div *ngIf="inPhone.errors?.['required']" class="invalid-feedback fs-6">Полето е задължително</div>
+                <div *ngIf="inPhone.errors?.['pattern']" class="invalid-feedback fs-6">Моля ползвайте следният формат +359111222333</div>
+                <div *ngIf="inPhone.valid" class="valid-feedback fs-6">Полето е валидно</div>
+            </div>
+            <!-- Cuisine -->
+            <div class="form-group mb-3">
+                <input [ngModel]="restaurantDetails.cuisine" #inCuisine="ngModel" type="text" class="form-control" name="cuisine" placeholder="Предлагана кухня"
+                    [ngClass]="{'is-valid': inCuisine.valid && inCuisine.dirty, 'is-invalid': inCuisine.invalid && inCuisine.dirty}" 
+                    required minlength="5" maxlength="40">
+                    <!-- Validation messages -->
+                    <div *ngIf="inCuisine.errors?.['required']" class="invalid-feedback fs-6">Полето е задължително</div>
+                    <div *ngIf="inCuisine.errors?.['minlength']" class="invalid-feedback fs-6">Предлагана кухня трябва да бъде поне 5 символа</div>
+                    <div *ngIf="inCuisine.errors?.['maxLength']" class="invalid-feedback fs-6">Предлагана кухня трябва да бъде максимум 40 символа</div>
+                    <div *ngIf="inCuisine.valid" class="valid-feedback fs-6">Полето е валидно</div>
+            </div>
+            <!-- Description -->
+            <div class="form-group mb-3">
+                <textarea [ngModel]="restaurantDetails.description" #inDescription="ngModel" type="text" class="form-control" name="description" placeholder="Кратко описание на ресторанта" 
+                [ngClass]="{'is-valid': inDescription.valid && inDescription.dirty, 'is-invalid': inDescription.invalid && inDescription.dirty}" 
+                required minlength="5" maxlength="200"></textarea>
+                <!-- Validation messages -->
+                <div *ngIf="inDescription.errors?.['required']" class="invalid-feedback fs-6">Полето е задължително</div>
+                <div *ngIf="inDescription.errors?.['minlength']" class="invalid-feedback fs-6">Описанието трябва да бъде поне 5 символа</div>
+                <div *ngIf="inDescription.errors?.['maxLength']" class="invalid-feedback fs-6">Описанието трябва да бъде максимум 200 символа</div>
+                <div *ngIf="inDescription.valid" class="valid-feedback fs-6">Полето е валидно</div>
+            </div>
+            <!-- Image -->
+            <div class="form-group mb-3">
+                <!-- On change event get value -->
+                <input [ngModel]="restaurantDetails.image" #inImage="ngModel" (ngModelChange)="validateImagePath($event)" type="text" class="form-control" name="image" placeholder="Снимка"
+                        [ngClass]="{'is-valid': inImage.valid && inImage.dirty, 'is-invalid': inImage.invalid && inImage.dirty}"
+                        required pattern="^https?:\/\/[^ ]+$">
+                    <!-- Validation messages -->
+                    <div *ngIf="inImage.errors?.['required']" class="invalid-feedback fs-6">Полето е задължително</div>
+                    <div *ngIf="inImage.errors?.['pattern']" class="invalid-feedback fs-6">Снимката трябва да бъде линк започващ с http:// или https://</div>
+                    <div *ngIf="inImage.valid" class="valid-feedback fs-6">Полето е валидно</div>
+            </div>
+            <!-- Button  -->
+            <div class="form-submit mb-5">
+                <button [disabled]="editRestaurant.invalid" class="btn btn-primary shadow justify-content-center align-items-center align-content-center"
+                    style="margin-left: 116px;"><i class="bi bi-pencil-square"></i> Редактирай</button>
+            </div>
+        </form>
+    </div>
+    <div class="col d-none d-lg-flex flex-grow-1 mt-5" style="margin-left: 49px;">
+         <!-- If the value entered by the user is correct, display a new link -->
+         <img class="rounded-3" src="{{imageUrl ? imageUrl : restaurantDetails.image}}" alt="No Image" 
+         style="width: 340px;height: 402px;position: relative;padding-bottom: 0px;padding-top: 0px;margin-top: 9px;"
+             width="340" height="402">
+    </div>
+</div>

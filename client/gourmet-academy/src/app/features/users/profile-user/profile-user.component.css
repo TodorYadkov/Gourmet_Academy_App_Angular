@@ -1,0 +1,204 @@
+.card-profile {
+    /* This is the size of the profile details card */
+    /* width: 350px;
+    background-color: #efefef; */
+    border: none;
+    cursor: pointer;
+    transition: all 0.5s;
+}
+
+.image img {
+    transition: all 0.5s
+}
+
+.card-profile:hover .image img {
+    transform: scale(1.5)
+}
+
+.name {
+    font-size: 22px;
+    font-weight: bold
+}
+
+.idd {
+    font-size: 14px;
+    font-weight: 600
+}
+
+.idd1 {
+    font-size: 12px
+}
+
+.number {
+    font-size: 22px;
+    font-weight: bold
+}
+
+.follow {
+    font-size: 12px;
+    font-weight: 500;
+    color: #444444
+}
+
+.btn1 {
+    height: 40px;
+    width: 150px;
+    border: none;
+    background-color: #000;
+    color: #aeaeae;
+    font-size: 15px
+}
+
+.text span {
+    font-size: 13px;
+    color: #545454;
+    font-weight: 500
+}
+
+.icons i {
+    font-size: 19px
+}
+
+hr .new1 {
+    border: 1px solid
+}
+
+.join {
+    font-size: 14px;
+    color: #a0a0a0;
+    font-weight: bold
+}
+
+.date {
+    background-color: #ccc
+}
+
+/* Card summary for each order */
+
+*,
+*:after,
+*:before {
+    box-sizing: border-box;
+}
+
+section {
+    width: 90%;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+section+section {
+    margin-top: 2.5em;
+}
+
+h1 {
+    font-weight: 700;
+    line-height: 1.125;
+    font-size: clamp(1.5rem, 2.5vw, 2.5rem);
+}
+
+h2 {
+    margin-top: 0.25em;
+    color: #999;
+    font-size: clamp(1.125rem, 2.5vw, 1.25rem);
+}
+
+h2+* {
+    margin-top: 1.5em;
+}
+
+summary {
+    position: relative;
+    cursor: pointer;
+    padding: 0.4em 0.5em;
+    list-style: none;
+}
+
+summary::-webkit-details-marker {
+    display: none;
+}
+
+summary:hover {
+    background-color: #ddc9ba35;
+}
+
+summary div {
+    display: flex;
+    align-items: center;
+}
+
+summary h3 {
+    display: flex;
+    flex-direction: column;
+}
+
+summary small {
+    color: #ffffff;
+    font-size: 0.5em;
+}
+
+summary strong {
+    font-weight: 700;
+}
+
+summary span:first-child {
+    width: 8rem;
+    height: 4rem;
+    border-radius: 10px;
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1.25em;
+}
+
+summary span:first-child svg {
+    width: 2.25rem;
+    height: 2.25rem;
+}
+
+summary span:last-child {
+    font-weight: 700;
+    margin-left: auto;
+}
+
+summary:focus {
+    outline: none;
+}
+
+summary .plus {
+    color: #289672;
+}
+
+details {
+    border-bottom: 1px solid #ddc9ba;
+}
+
+details[open] {
+    box-shadow: -3px 0 0 #ddc9ba;
+}
+
+details:first-of-type {
+    border-top: 1px solid #ddc9ba;
+}
+
+details>div {
+    padding: 0em 0.8em 0;
+    font-size: 0.875em;
+}
+
+dl {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 0rem;
+}
+
+dl dt {
+    font-weight: 700;
+}
+
+dl div {
+    margin-right: 2em;
+    margin-bottom: 0.05em;
+}

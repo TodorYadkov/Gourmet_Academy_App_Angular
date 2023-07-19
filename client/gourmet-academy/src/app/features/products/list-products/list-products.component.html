@@ -1,0 +1,146 @@
+<div class="container rounded text-white table-shadow">
+    <!-- Spinner -->
+    <app-loading [isLoading]="isLoading"></app-loading>
+    <!-- Display error -->
+    <app-alert-message [errorMsgFromServer]="errorMsgFromServer"></app-alert-message>
+    <!-- Only for test class - card border-primary mb-3 -->
+    <div class="row" *ngIf="currentProducts">
+        <div class="product-details me-2">
+            <h2 class="fw-bold mb-3"><span class="text-decoration-underline">Всички продукти</span></h2>
+            <!-- Page to search, sort, number product per page -->
+            <div *ngIf="isShownProducts" class="form-group d-flex align-items-center justify-content-between mb-3">
+                <!-- Search -->
+                <div class="col-4 me-5 shadow-sm">
+                    <input ngModel (ngModelChange)="onSearch($event)" class="form-control form-control-sm" type="text"
+                        placeholder="Търси">
+                </div>
+                <div class="col-4 d-flex justify-content-end">
+                    <!-- Page to display -->
+                    <div class="me-2 shadow-sm">
+                        <select class="form-select form-select-sm pe-5" style="width: 110px;" ngModel (ngModelChange)="changeProductsToShow($event)">
+                            <option value="" selected>Покажи</option>
+                            <option value="20">20</option>
+                            <option value="40">40</option>
+                            <option value="60">60</option>
+                            <option value="-1">Всички</option>
+                        </select>
+                    </div>
+                    <!-- Sort by -->
+                    <div class="me-2 shadow-sm">
+                        <!-- Add aria-label="" to show icons -->
+                        <select class="form-select form-select-sm px-1" aria-label="Search select" style="width: 110px;" ngModel (ngModelChange)="sortProductsBy($event)">
+                            <option value="" selected>Сортирай</option>
+                            <option value="name">Име</option>
+                            <option value="group">Група</option>
+                            <option value="priceASC">Цена &#x2191;</option>	2191
+                            <option value="priceDSC">Цена &#x2193;</option>	2193
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <!-- Message if no product found -->
+            <ng-container *ngIf="isFoundResult">
+                <div class="alert alert-dismissible alert-warning mt-5 text-center">
+                    <h2><strong>Няма намерени продукти</strong></h2>
+                </div>
+            </ng-container>
+
+            <div class="row">
+                <div class="col-12">
+                    <!-- Card product -->
+                    <ng-container *ngIf="isShownProducts; else noProduct">
+                        <div *ngFor="let product of currentProducts" class="f-block d-flex justify-content-between align-items-center mt-1 py-2 items rounded box">
+                            <!-- Image product -->
+                            <div class="d-flex flex-row">
+                                <img alt="No Image" class="rounded mx-2 d-none d-lg-flex flex-grow-1" src="{{product.image}}"
+                                    width="50px" height="50px">
+                                <div class="me-2"><span class="d-block text-muted fst-italic spec">Име: </span><span
+                                        class="d-block fst-bold">{{product.name}}</span></div>
+                            </div>
+                            <div class="d-flex text-muted">
+                                <div class="mx-2"><span
+                                        class="d-block text-muted fst-italic spec d-none d-lg-flex flex-grow-1">Грамаж:
+                                    </span><span
+                                        class="d-block fst-bold d-none d-lg-flex flex-grow-1 text-white">{{product.weight}}</span>
+                                </div>
+                                <div class="mx-2"><span
+                                        class="d-block text-muted fst-italic spec d-none d-lg-flex flex-grow-1">Група:
+                                    </span><span
+                                        class="d-block fst-bold d-none d-lg-flex flex-grow-1 text-white">{{product.group}}</span>
+                                </div>
+                                <div class="mx-2"><span class="d-block text-muted fst-italic spec">Цена: </span><span
+                                        class="d-block fst-bold text-white">{{product.price | number:'1.2-2' }} лв.</span></div>
+                                <!-- Edit button -->
+                                <div class="ms-5 me-3">
+                                    <a type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                        [attr.data-bs-target]="'#' + 'edit_' + product._id">
+                                        <div class="d-flex mx-0"><i class="bi bi-pencil-square"></i></div>
+                                    </a>
+                                </div>
+                                <!-- Delete button -->
+                                <div class="me-2">
+                                    <a type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                        [attr.data-bs-target]="'#' + 'delete_' + product._id">
+                                        <div class="d-flex mx-0"><i class="bi bi-trash3"></i></div>
+                                    </a>
+                                </div>
+                            </div>
+                            <!-- Edit Product -->
+                            <!-- modal - add data-bs-focus="true" - Puts the focus on the modal when initialized, data-bs-backdrop="static" = for a backdrop which doesn't close the modal on click -->
+                            <!-- modal - ata-bs-keyboard="true" - Closes the modal when escape key is pressed -->
+                            <div class="modal fade" id="edit_{{product._id}}" data-bs-focus="true"
+                                data-bs-backdrop="static" data-bs-keyboard="true" tabindex="-1"
+                                aria-labelledby="editProduct" aria-hidden="true">
+
+                                <app-edit-product [productDetails]="product"></app-edit-product>
+
+                            </div>
+                            <!-- Delete product -->
+                            <div class="modal fade" id="delete_{{product._id}}" data-bs-focus="true"
+                                data-bs-backdrop="static" data-bs-keyboard="true" tabindex="-1"
+                                aria-labelledby="deleteProduct" aria-hidden="true">
+
+                                <app-delete-product [productDetails]="product"></app-delete-product>
+
+                            </div>
+                        </div>
+                        <!-- Pagination -->
+                        <nav class="d-flex col justify-content-center align-content-center mt-3">
+                            <ul class="pagination pagination-sm justify-content-center">
+                                <li class="page-item" [class.disabled]="currentPage === 1">
+                                    <a class="page-link" (click)="goToPage(1)" aria-label="First">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+                                <li class="page-item" [class.disabled]="currentPage === 1">
+                                    <a class="page-link" (click)="goToPage(currentPage - 1)" aria-label="Previous">
+                                        <span aria-hidden="true">&lsaquo;</span>
+                                    </a>
+                                </li>
+                                <li class="page-item" *ngFor="let page of pages" [class.active]="page === currentPage">
+                                    <a class="page-link" (click)="goToPage(page)">{{ page }}</a>
+                                </li>
+                                <li class="page-item" [class.disabled]="currentPage === totalPages">
+                                    <a class="page-link" (click)="goToPage(currentPage + 1)" aria-label="Next">
+                                        <span aria-hidden="true">&rsaquo;</span>
+                                    </a>
+                                </li>
+                                <li class="page-item" [class.disabled]="currentPage === totalPages">
+                                    <a class="page-link" (click)="goToPage(totalPages)" aria-label="Last">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </ng-container>
+                    <!-- Message if no product in DB -->
+                    <ng-template #noProduct>
+                        <div class="alert alert-dismissible alert-warning mt-5 text-center">
+                            <h2><strong>Няма добавени продукти</strong></h2>
+                        </div>
+                    </ng-template>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

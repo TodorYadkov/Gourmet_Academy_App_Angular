@@ -1,0 +1,51 @@
+<!-- Spinner -->
+<app-loading [isLoading]="isLoading"></app-loading>
+
+<div *ngIf="!isLoading" class="body-form login-content mt-5 mb-5">
+    <div class="login-image d-flex">
+        <img class="booking-img position-sticky d-none d-lg-flex flex-grow-1" src="/assets/login-img.jpg"
+            alt="Login Image">
+    </div>
+    <div class="login-form">
+        <form id="login-form" #loginForm="ngForm" (ngSubmit)="loginUser(loginForm)">
+            <h2><i class="bi bi-door-open"></i> Вход</h2>
+
+            <!-- Display error  -->
+            <app-alert-message [errorMsgFromServer]="errorMsgFromServer"></app-alert-message>
+            
+            <!-- Email -->
+            <div class="form-group form-input">
+                <input id="email" type="email" class="form-control" name="email" ngModel #inEmail="ngModel"
+                    [ngClass]="{'is-valid': inEmail.valid && inEmail.dirty, 'is-invalid': inEmail.invalid && inEmail.dirty}"
+                    required email pattern="^[\w]+@[\w]+\.[\w]+$">
+                <label for="email" class="form-label">Имейл</label>
+                <!-- Validation messages -->
+                <div *ngIf="inEmail.errors?.['required']" class="invalid-feedback fs-6">Полето е
+                    задължително</div>
+                <div *ngIf="inEmail.errors?.['email'] || inEmail.errors?.['pattern']" class="invalid-feedback fs-6">
+                    Въведеният имейл е невалиден</div>
+                <div *ngIf="inEmail.valid" class="valid-feedback fs-6">Полето е валидно</div>
+            </div>
+            <!-- Password -->
+            <div class="form-group form-input">
+                <input id="password" type="password" class="form-control" name="password" ngModel #inPass="ngModel"
+                    [ngClass]="{'is-valid': inPass.valid && inPass.dirty, 'is-invalid': inPass.invalid && inPass.dirty}"
+                    required minlength="6">
+                <label for="password" class="form-label">Въведете вашата парола</label>
+                <!-- Validation messages -->
+                <div *ngIf="inPass.errors?.['required']" class="invalid-feedback fs-6">Полето е
+                    задължително</div>
+                <div *ngIf="inPass.errors?.['minlength']" class="invalid-feedback fs-6">Паролата
+                    трябва да
+                    бъде поне 6 символа</div>
+                <div *ngIf="inPass.valid" class="valid-feedback fs-6">Полето е валидно</div>
+            </div>
+
+            <div class="form-submit mt-4">
+                <input [disabled]="loginForm.invalid" type="submit" value="Вход" class="submit" id="submit"
+                    name="submit" />
+                <a class="login-vertify" routerLink="/register">Все още нямате акаунт?</a>
+            </div>
+        </form>
+    </div>
+</div>

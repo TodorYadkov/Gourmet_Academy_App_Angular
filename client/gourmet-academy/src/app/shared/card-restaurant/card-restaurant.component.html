@@ -1,0 +1,31 @@
+<div class="container">
+    <div class="card">
+        <div class="content">
+            <div class="imgBx">
+                <img src="{{restaurant.image}}" alt="{{restaurant.name}}">
+            </div>
+            <div class="contentBx">
+                <h3>{{restaurant.name}}
+                    <br>
+                    <span><i class="fas fa-utensils"></i> {{restaurant.cuisine}}</span>
+                    <br>
+                    <span><i class="bi bi-geo-alt-fill"></i> {{restaurant.location}}</span>
+                </h3>
+            </div>
+        </div>
+        <ul class="sci">
+            <li>
+                <div class="btn btn-primary btn-lg">
+                    <!-- Using on profile page -->
+                    <ng-container *ngIf="profile; else default">
+                        <a routerLink="/details/{{restaurant._id}}">Детайли</a>
+                    </ng-container>
+                    <!-- Using in home template -->
+                    <ng-template #default>
+                        <a routerLink="/orders/{{restaurant._id}}">Нашето меню</a>
+                    </ng-template>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>

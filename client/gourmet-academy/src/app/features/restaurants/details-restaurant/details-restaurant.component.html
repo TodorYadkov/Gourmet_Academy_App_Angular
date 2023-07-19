@@ -1,0 +1,82 @@
+<div class="shadow-lg d-flex flex-column position-relative mt-4 mb-3 rounded card">
+
+    <!-- Spinner -->
+    <app-loading [isLoading]="isLoading"></app-loading>
+
+    <!-- Display error -->
+    <app-alert-message [errorMsgFromServer]="errorMsgFromServer" [autoHide]="true"></app-alert-message>
+    
+    <div *ngIf="restaurantDetails !== undefined" class="container mt-3 mb-3 ">
+        <div class="row">
+            <div class="col-md-6 col-xxl-3">
+                <!-- Restaurant details -->
+                <div class="card">
+                    <div class="card-body"><img src="{{restaurantDetails.image}}" alt="No Image" class="rounded border" style="height: 230px; width: 268px;" width="268" height="230">
+                        <h4 class="card-title mt-2">{{restaurantDetails.name}}</h4>
+                        <h6 class="text-muted card-subtitle mb-2"><i class="bi bi-phone"></i> {{restaurantDetails.phone}}</h6>
+                        <p class="card-text text-muted mt-0 mb-0"><i class="fas fa-utensils"></i> {{restaurantDetails.cuisine}}</p>
+                        <p class="card-text text-muted mt-0 mb-0"><i class="bi bi-geo-alt-fill"></i> {{restaurantDetails.location}}, {{restaurantDetails.address}}</p>
+                        <p class="card-text text-muted mt-0 mb-0"><i class="bi bi-info-square"></i> {{restaurantDetails.description}}</p>
+                    </div>
+                </div>
+                <!-- Comments -->
+                <div class="card" style="margin-top: 10px;">
+                    <div class="card-body">
+                        <h4 class="card-title">Коментари</h4>
+                        <ng-container *ngIf="allComments.length !== 0;else noComments">
+                            <p class="text-muted small mb-3" style="font-size: 8px;margin-top: -10px;">Последни пет добавени коментари</p>
+                            <!-- Print comments -->
+                            <div *ngFor="let comment of allComments" class="card-text" style="margin-top: -10px;">
+                                <p class="text-muted mb-0 py-0"><strong>{{comment.userId.name}}:</strong><br><span>{{comment.comment}}</span></p>
+                                <hr class="mt-0">
+                            </div> 
+                        </ng-container>
+                        <ng-template #noComments>
+                            <p class="text-muted my-5">Все още няма добавени коментари</p>
+                        </ng-template>                    
+                    </div>
+                </div>
+            </div>
+            <!-- Tabs list -->
+            <div class="col-md-6 col-xxl-9" style="position: relative;display: block;">
+                <div class="card-body">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="nav-item" role="presentation"><a class="nav-link fs-5 active px-2 text-white" role="tab" data-bs-toggle="tab" href="#tab-1"><i class="bi bi-list"></i> Всички продукти</a></li>
+                        <li class="nav-item" role="presentation"><a class="nav-link fs-5 px-2 text-white" role="tab" data-bs-toggle="tab" href="#tab-2"><i class="bi bi-plus-circle"></i> Добави продукт</a></li>
+                        <li class="nav-item" role="presentation"><a class="nav-link fs-5 px-2 text-white" role="tab" data-bs-toggle="tab" href="#tab-3"><i class="bi bi-pencil-square"></i> Редактирай ресторант</a></li>
+                        <li class="nav-item" role="presentation"><a class="nav-link fs-5 px-2 text-white" role="tab" data-bs-toggle="tab" href="#tab-4"><i class="bi bi-x-circle"></i> Изтрий ресторант</a></li>
+                        <li class="nav-item justify-content-end me-3 mt-1" style="position: absolute; right: 0;"><a class="btn btn-outline-primary mt-2 btn-sm text-white" routerLink="/profile" role="tab"><i class="bi bi-caret-left"></i> Назад</a></li>
+                    </ul>
+
+                    <!-- Tabs content -->
+                    <div class="tab-content">
+                        <!-- List all products -->
+                        <div class="tab-pane active show" role="tabpanel" id="tab-1" style="padding-top: 30px;padding-bottom: 31px;">
+
+                            <app-list-products [restaurantId]="restaurantDetails._id"></app-list-products>
+
+                        </div>
+                        <!-- Add new product -->
+                        <div class="tab-pane" role="tabpanel" id="tab-2" style="padding-top: 30px;padding-bottom: 31px;">
+
+                            <app-add-product [restaurantId]="restaurantDetails._id"></app-add-product>
+
+                        </div>
+                        <!-- Edit restaurant -->
+                        <div class="tab-pane" role="tabpanel" id="tab-3" style="padding-top: 30px;padding-bottom: 31px;">
+                           
+                            <app-edit-restaurant [restaurantDetails]="restaurantDetails" (restaurantUpdated)="refreshRestaurantDetails()"></app-edit-restaurant>
+
+                        </div>
+                        <!-- Delete restaurant -->
+                        <div class="tab-pane" role="tabpanel" id="tab-4" style="padding-top: 30px;padding-bottom: 31px;">
+                           
+                            <app-delete-restaurant [restaurantDetails]="restaurantDetails"></app-delete-restaurant>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

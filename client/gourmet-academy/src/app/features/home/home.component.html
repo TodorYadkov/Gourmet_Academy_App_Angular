@@ -1,0 +1,140 @@
+<!-- Home page image -->
+<app-carousel></app-carousel>
+<!-- Show error message -->
+<app-alert-message [errorMsgFromServer]="errorMsgFromServer" [autoHide]="true"></app-alert-message>
+
+<!-- Hide if there is no restaurant in the DB -->
+<ng-container *ngIf="allRestaurants.length !== 0; else noRestaurants">
+    <div id="home">
+        <div class="col-lg12 mt-2 card">
+            <div class="list-group">
+                <h5 class="text-center text-primary fst-roboto mb-0">Намерете любимият си ресторант бързо и лесно</h5>
+                <form class="d-flex px-3 pt-1 pb-3" #searchForm="ngForm" (ngSubmit)="onSearch(searchForm)">
+
+                    <i class="bi bi-search text-primary" style="font-size: 28px;"></i>&nbsp;&nbsp;<input
+                        name="restaurantName" class="form-control me-sm-2" type="search"
+                        placeholder="Въведете име на ресторант" ngModel #inName="ngModel" maxlength="30">
+
+                    <i class="bi bi-geo-alt-fill text-primary" style="font-size: 28px;"></i>&nbsp;&nbsp;<input
+                        name="location" class="form-control me-sm-2" type="search" placeholder="Въведете град" ngModel
+                        #inLocation="ngModel" maxlength="30">
+
+                    <button class="btn btn-primary" type="submit" [disabled]="!isValidForm(searchForm)">Търси</button>
+                </form>
+                <ng-container *ngIf="isSubmitedSearch">
+                    <p class="alert alert-dismissible alert-warning clear-error mb-0">Няма намерени резултати</p>
+                </ng-container>
+            </div>
+
+        </div>
+
+
+        <!-- Spinner -->
+        <app-loading [isLoading]="isLoading"></app-loading>
+
+        <ng-container *ngIf="!isLoading">
+            <h1 class="fst-marck text-primary-emphasis text-center" style="margin-top: 14px;">Поръчайте сега от любимият си ресторант !</h1>
+
+            <div class="row">
+
+                <!-- When the search is called the found restaurant render here -->
+                <ng-container *ngIf="foundRestaurants.length > 0">
+                    <div class="card mt-2 mb-4">
+                        <div class="row">
+                            <div *ngFor="let restaurant of foundRestaurants" class="col-md-4">
+
+                                <app-card-restaurant [restaurant]="restaurant"></app-card-restaurant>
+
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+
+                <!-- Home page initial render on all restaurants -->
+                <ng-container *ngIf="foundRestaurants.length === 0">
+                    <div class="card mt-2 mb-4">
+                        <div class="row">
+                            <div *ngFor="let restaurant of allRestaurants" class="col-md-4">
+
+                                <app-card-restaurant [restaurant]="restaurant"></app-card-restaurant>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Paginantion navigation -->
+                    <ng-container *ngIf="isLoading === false">
+                        <div class="d-flex justify-content-center align-items-center">
+                            <ul class="pagination pagination-lg">
+                                <!-- Display right direction arrow if is on the first page is disabled -->
+                                <li class="page-item" [class.disabled]="pageNumber === 1">
+                                    <a class="page-link" href="javascript:void(0)"
+                                        (click)="goToPage(pageNumber - 1)">&laquo;</a>
+                                </li>
+                                <!-- Show only when we have only 5 pages -->
+                                <ng-container *ngIf="totalPages <= 5">
+                                    <!-- Show all page numbers if total pages <= 5 -->
+                                    <li class="page-item" *ngFor="let page of pageArray"
+                                        [class.active]="page === pageNumber">
+                                        <a class="page-link" href="javascript:void(0)"
+                                            (click)="goToPage(page)">{{page}}</a>
+                                    </li>
+                                </ng-container>
+                                <!-- Show when the pages are more than 5 -->
+                                <ng-container *ngIf="totalPages > 5">
+                                    <!-- Show page numbers with ellipsis if total pages > 5 -->
+                                    <li class="page-item" *ngIf="pageNumber > 3">
+                                        <a class="page-link" href="javascript:void(0)" (click)="goToPage(1)">1</a>
+                                    </li>
+
+                                    <!-- Ellipsis at end -->
+                                    <li class="page-item" *ngIf="pageNumber >= 4">
+                                        <span class="page-link">...</span>
+                                    </li>
+
+                                    <!-- Display buttons with active pages when the button is clicked if the current page and the number is the same add class active -->
+                                    <li class="page-item" *ngFor="let page of getVisiblePageNumbers()"
+                                        [class.active]="page === pageNumber">
+                                        <a class="page-link" href="javascript:void(0)"
+                                            (click)="goToPage(page)">{{page}}</a>
+                                    </li>
+
+                                    <!-- Ellipsis at beginning -->
+                                    <li class="page-item" *ngIf="pageNumber < totalPages - 3">
+                                        <span class="page-link">...</span>
+                                    </li>
+
+                                    <!-- Display total page at end -->
+                                    <li class="page-item" *ngIf="pageNumber < totalPages - 2">
+                                        <a class="page-link" href="javascript:void(0)"
+                                            (click)="goToPage(totalPages)">{{totalPages}}</a>
+                                    </li>
+                                </ng-container>
+
+                                <!-- Display left direction arrow if is on the disabled -->
+                                <li class="page-item" [class.disabled]="pageNumber === totalPages">
+                                    <a class="page-link" href="javascript:void(0)"
+                                        (click)="goToPage(pageNumber + 1)">&raquo;</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </ng-container>
+
+                </ng-container>
+
+            </div>
+
+        </ng-container>
+
+    </div>
+</ng-container>
+
+<!-- In case there are no restaurants in DB -->
+<ng-template #noRestaurants>
+    <div class="card border-primary my-4">
+        <div class="text-center fst-marck text-primary-emphasis py-5">
+            <h1><strong>Бъдете първи и добавете вашият ресторант сега</strong></h1>
+            <h2>Повишете вашите продажби с няколко лесни стъпки от <a routerLink="/add-restaurants" class="alert-link">ТУК</a></h2>
+        </div>
+    </div>
+</ng-template>
