@@ -6,6 +6,6 @@
   },
   "scripts": {
     "start": "cd server && node index.js",
-    "build": "cd client/dist/gourmet-academy && npm run build"
+    "build": "cd client && npm run build"
   }
 }
