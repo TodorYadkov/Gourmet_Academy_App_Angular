@@ -101,6 +101,3 @@ The Angular frontend of Gourmet Academy is deployed on [Netlify](https://www.net
 ### Database
 
 The MongoDB database used for Gourmet Academy is hosted on [MongoDB Cloud](https://cloud.mongodb.com). MongoDB Cloud ensures reliable and scalable data storage for the application.
-
-# Live demo 
-https://main--gourmet-academy.netlify.app/
