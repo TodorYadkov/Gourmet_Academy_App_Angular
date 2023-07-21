@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Gourmet Academy
 
 **Gourmet Academy** is my final project for the Angular course in SoftUni is created with Node.js, Express.js, MongoDB with Mongoose for the backend, and Angular for the frontend.
@@ -102,10 +101,3 @@ The Angular frontend of Gourmet Academy is deployed on [Netlify](https://www.net
 ### Database
 
 The MongoDB database used for Gourmet Academy is hosted on [MongoDB Cloud](https://cloud.mongodb.com). MongoDB Cloud ensures reliable and scalable data storage for the application.
-=======
-# Gourmet_Academy_App_Angular
-My final project for the Angular course in SoftUni is created with Node.js, Express.js, MongoDB with Mongoose for the backend, and Angular for the frontend.
-
-# Live demo 
-https://main--gourmet-academy.netlify.app/
->>>>>>> 83612bb6aa55b75f48c911c93dc639e1894c45d4
