@@ -1,111 +1,153 @@
 <!-- User page -->
 <ng-container *ngIf="isRoleAdmin === false">
-    <app-profile-user [userDetails]="userDetails"></app-profile-user>
+  <app-profile-user [userDetails]="userDetails"></app-profile-user>
 </ng-container>
 
 <!-- Spinner -->
 <ng-container *ngIf="isLoading && isRoleAdmin">
-    <app-loading [isLoading]="isLoading"></app-loading>
+  <app-loading [isLoading]="isLoading"></app-loading>
 </ng-container>
 
 <!-- Admin page -->
 <div *ngIf="!isLoading && isRoleAdmin" class="row mt-5 mb-4">
+  <!-- Display error  -->
+  <app-alert-message
+    [errorMsgFromServer]="errorMsgFromServer"
+    [autoHide]="true"
+  ></app-alert-message>
 
-    <!-- Display error  -->
-    <app-alert-message [errorMsgFromServer]="errorMsgFromServer" [autoHide]="true"></app-alert-message>
-
-    <div class="col-md-3">
-        <!-- User details -->
-        <div *ngIf="userDetails">
-            <div class="card">
-                <div class="card card-profile p-4">
-                    <div class=" image d-flex flex-column justify-content-center align-items-center">
-                        <button class="btn btn-secondary"> <img src="/assets/profile-page.png" height="100"
-                                width="100" /></button>
-                        <span class="name mt-3 text-decoration-underline">{{userDetails.name}}</span>
-                        <div class="d-flex flex-column justify-content-center">
-                            <span class="idd"><i class="bi bi-building-check"></i> {{userDetails.companyIdentificationNumber}}</span>
-                            <span class="idd"><i class="bi bi-envelope"></i> {{userDetails.email}}</span>
-                            <span class="idd"><i class="bi bi-phone"></i> {{userDetails.phone}}</span>
-                            <span class="idd"><i class="bi bi-house"></i> {{userDetails.address}}</span>
-                        </div>
-                    </div>
-                </div>
+  <div class="col-md-3">
+    <!-- User details -->
+    <div *ngIf="userDetails">
+      <div class="card">
+        <div class="card card-profile p-4">
+          <div
+            class="image d-flex flex-column justify-content-center align-items-center"
+          >
+            <button class="btn btn-secondary">
+              <img src="/assets/profile-page.png" height="100" width="100" />
+            </button>
+            <span class="name mt-3 text-decoration-underline">{{
+              userDetails.name
+            }}</span>
+            <div class="d-flex flex-column justify-content-center">
+              <span class="idd"
+                ><i class="bi bi-building-check"></i>
+                {{ userDetails.companyIdentificationNumber }}</span
+              >
+              <span class="idd"
+                ><i class="bi bi-envelope"></i> {{ userDetails.email }}</span
+              >
+              <span class="idd"
+                ><i class="bi bi-phone"></i> {{ userDetails.phone }}</span
+              >
+              <span class="idd"
+                ><i class="bi bi-house"></i> {{ userDetails.address }}</span
+              >
             </div>
-            <br>
-
-            <!-- Show only if the owner has resaturants accordion - statistics -->
-            <div *ngIf="userRestaurants.length > 0;" class="fst-roboto">
-                <div class="card">
-                    <h5 class="card-header text-white"><i class="bi bi-bar-chart-line"></i> Статистика</h5>
-                </div>
-                <div class="accordion" id="statistics">
-                    <!-- Display statistics for each restaurant -->
-                    <div *ngFor="let stat of statistics;let index" class="accordion-item">
-                        <h2 class="accordion-header" id="heading{{stat.restaurantId}}">
-                            <!-- Adding a collapsed button class to a button to be collapsed -->
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                [attr.data-bs-target]="'#collapse' + stat.restaurantId" aria-expanded="false"
-                                [attr.aria-controls]="'collapse' + stat.restaurantId">
-                                {{stat.restaurantName}}
-                            </button>
-                        </h2>
-                        <!-- Add show on - to show content - class accordion-collapse collapse show -->
-                        <div [id]="'collapse' + stat.restaurantId" class="accordion-collapse collapse"
-                            [attr.aria-labelledby]="'panelsStayOpen-' + stat.restaurantId">
-                            <div class="accordion-body">
-                                <i class="bi bi-cash-stack"></i> Общо приходи: <strong>{{stat.totalProfit |
-                                    number:'1.2-2' }} лв.</strong>
-                                <br>
-                                <i class="bi bi-bag-check"></i> Общо продажби: <strong>{{stat.totalCountSell}}</strong>
-                                <br>
-                                <i class="bi bi-5-square"></i> Най-продавани продукти:
-                                <ng-container *ngFor="let sale of stat.bestSellers">
-                                    <br>
-                                    <span class="fst-italic fs-6">{{sale}}</span>
-                                </ng-container>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
+          </div>
         </div>
+      </div>
+      <br />
+
+      <!-- Show only if the owner has resaturants accordion - statistics -->
+      <div *ngIf="userRestaurants.length > 0" class="fst-roboto">
+        <div class="card">
+          <h5 class="card-header text-white">
+            <i class="bi bi-bar-chart-line"></i> Статистика
+          </h5>
+        </div>
+        <div class="accordion" id="statistics">
+          <!-- Display statistics for each restaurant -->
+          <div
+            *ngFor="let stat of statistics; let index"
+            class="accordion-item"
+          >
+            <h2 class="accordion-header" id="heading{{ stat.restaurantId }}">
+              <!-- Adding a collapsed button class to a button to be collapsed -->
+              <button
+                class="accordion-button collapsed"
+                type="button"
+                data-bs-toggle="collapse"
+                [attr.data-bs-target]="'#collapse' + stat.restaurantId"
+                aria-expanded="false"
+                [attr.aria-controls]="'collapse' + stat.restaurantId"
+              >
+                {{ stat.restaurantName }}
+              </button>
+            </h2>
+            <!-- Add show on - to show content - class accordion-collapse collapse show -->
+            <div
+              [id]="'collapse' + stat.restaurantId"
+              class="accordion-collapse collapse"
+              [attr.aria-labelledby]="'panelsStayOpen-' + stat.restaurantId"
+            >
+              <div class="accordion-body">
+                <i class="bi bi-cash-stack"></i> Общо приходи:
+                <strong>{{ stat.totalProfit | number : "1.2-2" }} лв.</strong>
+                <br />
+                <i class="bi bi-bag-check"></i> Общо продажби:
+                <strong>{{ stat.totalCountSell }}</strong>
+                <br />
+                <i class="bi bi-5-square"></i> Най-продавани продукти:
+                <ng-container *ngFor="let sale of stat.bestSellers">
+                  <br />
+                  <span class="fst-italic fs-6">{{ sale }}</span>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-9">
+    <!-- Hide if the owner not have any restaurant -->
+    <div
+      class="border-primary mb-4"
+      *ngIf="userRestaurants.length > 0; else noRestaurants"
+    >
+      <div class="card">
+        <div class="card">
+          <h3 class="card-header text-white fst-roboto">
+            <i class="bi bi-list"></i>
+            {{
+              userRestaurants.length === 1
+                ? "Моят Ресторант"
+                : "Моите Ресторанти"
+            }}
+          </h3>
+        </div>
+        <div class="row">
+          <div *ngFor="let restaurant of userRestaurants" class="col-md-6">
+            <!-- Render card for each user restaurant -->
+            <app-card-restaurant
+              [restaurant]="restaurant"
+              [profile]="true"
+            ></app-card-restaurant>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div class="col-md-9">
-        <!-- Hide if the owner not have any restaurant -->
-        <div class="border-primary mb-4" *ngIf="userRestaurants.length > 0; else noRestaurants">
-            <div class="card">
-                <div class="card">
-                    <h3 class="card-header text-white fst-roboto"><i class="bi bi-list"></i>
-                        {{userRestaurants.length === 1 ? 'Моят Ресторант' : 'Моите Ресторанти'}}</h3>
-                </div>
-                <div class="row">
-                    <div *ngFor="let restaurant of userRestaurants" class="col-md-6">
-                        <!-- Render card for each user restaurant -->
-                        <app-card-restaurant [restaurant]="restaurant" [profile]="true"></app-card-restaurant>
-
-                    </div>
-                </div>
+    <ng-template #noRestaurants>
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="card">
+            <div class="text-center fst-marck text-primary-emphasis my-5 py-4">
+              <h2 class="mt-4">
+                <strong>Все още нямате добавен ресторант</strong>
+              </h2>
+              <h2>
+                Направете го сега и увеличете свойте продажби с няколко лесни
+                стъпки от
+                <a routerLink="/add-restaurants" class="alert-link">ТУК</a>
+              </h2>
             </div>
+          </div>
         </div>
-
-        <ng-template #noRestaurants>
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="card">
-                        <div class="text-center fst-marck text-primary-emphasis my-5 py-4">
-                            <h2 class="mt-4"><strong>Все още нямате добавен ресторант</strong></h2>
-                            <h2>Направете го сега и увеличете свойте продажби с няколко лесни стъпки от <a
-                                    routerLink="/add-restaurants" class="alert-link">ТУК</a>
-                            </h2>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </ng-template>
-    </div>
-
+      </div>
+    </ng-template>
+  </div>
 </div>

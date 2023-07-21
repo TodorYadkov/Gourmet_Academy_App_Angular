@@ -1,5 +1,7 @@
 export const constants = {
+    // hostBackEnd: 'http://localhost:3000/',
     hostBackEnd: 'https://gourmet-academy.onrender.com/',
+    weatherURL: (weatherApiKey: string) => `http://api.weatherapi.com/v1/current.json?key=${weatherApiKey}&q=auto:ip&lang=bg`,
     userTokenName: '65c227bd8f4eb7fe5ee3cd2ad13a5a8c',
     defaultPaginationPageNum: '1',
     defaultPaginationLimitNum: '3',
