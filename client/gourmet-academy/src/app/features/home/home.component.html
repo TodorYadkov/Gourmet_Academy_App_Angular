@@ -8,7 +8,7 @@
     <div id="home">
         <div class="col-lg12 mt-2 card">
             <div class="list-group">
-                <h5 class="text-center text-primary fst-roboto mb-0">Намерете любимият си ресторант бързо и лесно</h5>
+                <h5 class="text-center text-primary fst-roboto mb-0">Намерете любимия си ресторант бързо и лесно</h5>
                 <form class="d-flex px-3 pt-1 pb-3" #searchForm="ngForm" (ngSubmit)="onSearch(searchForm)">
 
                     <i class="bi bi-search text-primary" style="font-size: 28px;"></i>&nbsp;&nbsp;<input
@@ -33,7 +33,7 @@
         <app-loading [isLoading]="isLoading"></app-loading>
 
         <ng-container *ngIf="!isLoading">
-            <h1 class="fst-marck text-primary-emphasis text-center" style="margin-top: 14px;">Поръчайте сега от любимият си ресторант !</h1>
+            <h1 class="fst-marck text-primary-emphasis text-center" style="margin-top: 14px;">Поръчайте сега от любимия си ресторант !</h1>
 
             <div class="row">
 
