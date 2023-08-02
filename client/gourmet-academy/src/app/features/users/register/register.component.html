@@ -51,7 +51,7 @@
                     <div *ngIf="inPhone.errors?.['required']" class="invalid-feedback fs-6">Полето е
                         задължително</div>
                     <div *ngIf="inPhone.errors?.['pattern']" class="invalid-feedback fs-6">
-                        Моля ползвайте следният формат +359111222333</div>
+                        Моля ползвайте следния формат +359111222333</div>
                     <div *ngIf="inPhone.valid" class="valid-feedback fs-6">Полето е валидно</div>
                 </div>
                 <!-- Address -->
@@ -59,7 +59,7 @@
                     <input id="address" type="text" class="form-control" name="address" ngModel #inAddress="ngModel"
                         [ngClass]="{'is-valid': inAddress.valid && inAddress.dirty, 'is-invalid': inAddress.invalid && inAddress.dirty}"
                         required minlength="5" maxlength="100">
-                    <label for="address" class="form-label">Въведете вашият адрес</label>
+                    <label for="address" class="form-label">Въведете вашия адрес</label>
                     <!-- Validation messages -->
                     <div *ngIf="inAddress.errors?.['required']" class="invalid-feedback fs-6">Полето
                         е задължително</div>
