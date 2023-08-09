@@ -11,13 +11,12 @@
    - [User Features](#user-features)
    - [Administrator Features](#administrator-features)
 3. [Demo](#demo)
-4. [Installation](#installation)
-5. [Deployment](#deployment)
+4. [Deployment](#deployment)
    - [Backend Deployment](#backend-deployment)
    - [Frontend Deployment](#frontend-deployment)
    - [Database](#database)
-6. [Architecture-Overview](#architecture-overview)
-7. [Screenshots](#screenshots)
+5. [Architecture-Overview](#architecture-overview)
+6. [Screenshots](#screenshots)
    
 ## Introduction
 
@@ -68,27 +67,6 @@ Check out the live demo of Gourmet Academy at [https://main--gourmet-academy.net
 
     - Email: prifan@abv.bg
     - Password: 123456
-
-## Installation
-
-To run Gourmet Academy locally, follow these steps:
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/TodorYadkov/Gourmet_Academy_App_Angular.git
-   ```
-2. Run server:
-   ```bash
-   cd server
-   npm install
-   npm start
-   ```
-3. Run client Angular app:
-   ```bash
-    cd client/gourmet-academy
-    npm install
-    ng serve --open
-   ```
 
 ## Deployment
 
