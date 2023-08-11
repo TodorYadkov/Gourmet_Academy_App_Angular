@@ -4,7 +4,7 @@
 <app-alert-message [errorMsgFromServer]="errorMsgFromServer" [autoHide]="true"></app-alert-message>
 
 <!-- Hide if there is no restaurant in the DB -->
-<ng-container *ngIf="allRestaurants.length !== 0; else noRestaurants">
+<ng-container *ngIf="allRestaurants.length !== 0 || isLoading; else noRestaurants">
     <div id="home">
         <div class="col-lg12 mt-2 card">
             <div class="list-group">
