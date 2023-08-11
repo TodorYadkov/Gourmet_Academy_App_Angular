@@ -50,10 +50,8 @@ export class HomeComponent implements OnInit, OnDestroy {
           this.pageArray = Array(this.totalPages).fill(0).map((x, i) => i + 1);
           this.isLoading = false;
         },
-        error: (error) => {
-          this.errorMsgFromServer = error.error.message;
-          this.isLoading = false;
-        }
+        error: (error) => this.errorMsgFromServer = error.error.message,
+        complete: () => this.isLoading = false
       });
     // Add current observable to subscription and on ngDestroy all observable to be destroyed
     this.subscription.add(observAllRestaurants$);
