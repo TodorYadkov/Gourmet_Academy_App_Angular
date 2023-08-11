@@ -47,7 +47,7 @@ The main objective of Gourmet Academy is to provide users with an easy-to-use pl
 
 ## Demo
 
-Check out the live demo of Gourmet Academy at [https://main--gourmet-academy.netlify.app/](https://main--gourmet-academy.netlify.app/)
+Check out the live demo of Gourmet Academy at [https://gourmet-academy.netlify.app](https://gourmet-academy.netlify.app)
 
 **Demo Admin User:**
 
